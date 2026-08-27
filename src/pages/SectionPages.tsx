@@ -1,14 +1,15 @@
 import { useMemo, useState } from 'react'
 import {
-  kindLabel,
-  primaryKind,
-  type StationKind,
+  SENSOR_TYPE_NAMES,
+  stationSensorTypes,
+  type SensorTypeName,
   type StationPoint,
 } from '../api/geonet'
 import { brandIcon } from '../brand'
 import { PeriodPicker, type ChartPeriod } from '../components/PeriodPicker'
 import { QuakeMap } from '../components/QuakeMap'
 import { PageHero, ThemeFrame } from '../components/science/ThemeKit'
+import { SensorTypeIcon } from '../components/SensorTypeIcon'
 import { StationSheet } from '../components/StationSheet'
 import type { GeoNetBundle } from '../hooks/useGeoNetData'
 import './Pages.css'
@@ -32,27 +33,32 @@ export function MapPage({ data }: { data: GeoNetBundle }) {
   )
 }
 
-const SENSOR_FILTERS: Array<{ id: 'all' | 'seismic' | 'gnss' | 'geomag' | 'ocean'; label: string }> = [
-  { id: 'all', label: 'All sensors' },
-  { id: 'seismic', label: 'Ground shakers' },
-  { id: 'gnss', label: 'GPS pins' },
-  { id: 'geomag', label: 'Earth magnets' },
-  { id: 'ocean', label: 'Ocean' },
-]
+type SensorFilter = 'all' | SensorTypeName
 
-const FEATURED_CODES = ['WEL', 'EYWM', 'AUCK', 'NZE', 'GIST', 'WGTN']
-
-function stationMatchesFilter(station: StationPoint, filter: (typeof SENSOR_FILTERS)[number]['id']): boolean {
+function stationMatchesFilter(station: StationPoint, filter: SensorFilter): boolean {
   if (filter === 'all') return true
-  if (filter === 'ocean') return station.kinds.includes('dart') || station.kinds.includes('coastal')
-  return station.kinds.includes(filter)
+  return stationSensorTypes(station).includes(filter)
 }
 
 export function SensorsPage({ data }: { data: GeoNetBundle }) {
   const [selected, setSelected] = useState<StationPoint | null>(null)
-  const [filter, setFilter] = useState<(typeof SENSOR_FILTERS)[number]['id']>('all')
-  const [letter, setLetter] = useState<string | null>(null)
+  const [filter, setFilter] = useState<SensorFilter>('all')
   const [period, setPeriod] = useState<ChartPeriod>('1d')
+
+  const typeCounts = useMemo(() => {
+    const counts = new Map<SensorTypeName, number>()
+    for (const station of data.stations) {
+      for (const type of stationSensorTypes(station)) {
+        counts.set(type, (counts.get(type) ?? 0) + 1)
+      }
+    }
+    return counts
+  }, [data.stations])
+
+  const typeRows = useMemo(
+    () => SENSOR_TYPE_NAMES.filter((type) => (typeCounts.get(type) ?? 0) > 0),
+    [typeCounts],
+  )
 
   const filtered = useMemo(
     () =>
@@ -62,27 +68,12 @@ export function SensorsPage({ data }: { data: GeoNetBundle }) {
     [data.stations, filter],
   )
 
-  const letters = useMemo(() => {
-    const set = new Set(filtered.map((s) => s.code[0]?.toUpperCase()).filter(Boolean))
-    return [...set].sort()
-  }, [filtered])
-
-  const listed = useMemo(
-    () => (letter ? filtered.filter((s) => s.code[0]?.toUpperCase() === letter) : filtered),
-    [filtered, letter],
-  )
-
-  const featured = useMemo(
-    () => FEATURED_CODES.map((code) => data.stations.find((s) => s.code === code)).filter(Boolean) as StationPoint[],
-    [data.stations],
-  )
-
   return (
     <div className="page section-page sensor-page">
       <div className="sensor-hero">
         <PageHero
-          title="Sensor playground"
-          blurb="Currently operating stations from GeoNet’s sensor search — seismometers, GNSS pins, magnets, DART and coastal gauges. Touch a glowing dot or a name, then stretch the live charts."
+          title="Sensor network"
+          blurb="Same type symbols as GeoNet’s sensor search. Touch a type to show only those instruments, then touch a symbol or a station name."
           icon={brandIcon('layers.svg')}
         />
         <PeriodPicker value={period} onChange={setPeriod} />
@@ -90,57 +81,52 @@ export function SensorsPage({ data }: { data: GeoNetBundle }) {
 
       <div className="sensor-explore">
         <section className="card station-browser">
-          <div className="sensor-filters" role="tablist" aria-label="Sensor type">
-            {SENSOR_FILTERS.map((f) => (
+          <div className="sensor-type-list" role="tablist" aria-label="Sensor type">
+            <button
+              type="button"
+              role="tab"
+              aria-selected={filter === 'all'}
+              className={`sensor-type-row${filter === 'all' ? ' active' : ''}`}
+              onClick={() => setFilter('all')}
+            >
+              <span className="sensor-type-all" aria-hidden />
+              <span className="sensor-type-name">All sensor types</span>
+              <span className="sensor-type-count">{data.stations.length}</span>
+            </button>
+            {typeRows.map((type) => (
               <button
-                key={f.id}
+                key={type}
                 type="button"
                 role="tab"
-                aria-selected={filter === f.id}
-                className={`filter-chip${filter === f.id ? ' active' : ''}`}
-                onClick={() => {
-                  setFilter(f.id)
-                  setLetter(null)
-                }}
+                aria-selected={filter === type}
+                className={`sensor-type-row${filter === type ? ' active' : ''}`}
+                onClick={() => setFilter(type)}
               >
-                {f.label}
+                <SensorTypeIcon type={type} size={22} />
+                <span className="sensor-type-name">{type}</span>
+                <span className="sensor-type-count">{typeCounts.get(type) ?? 0}</span>
               </button>
             ))}
           </div>
-          {featured.length > 0 && filter === 'all' && !letter && (
-            <div className="featured-row">
-              <span className="featured-label">Try these</span>
-              {featured.map((s) => (
-                <button key={s.code} type="button" className="featured-chip" onClick={() => setSelected(s)}>
-                  {s.code}
-                </button>
-              ))}
-            </div>
-          )}
-          <div className="letter-bar" aria-label="Jump to letter">
-            {letters.map((L) => (
-              <button
-                key={L}
-                type="button"
-                className={`letter-chip${letter === L ? ' active' : ''}`}
-                onClick={() => setLetter((cur) => (cur === L ? null : L))}
-              >
-                {L}
-              </button>
-            ))}
-          </div>
-          <p className="muted station-count">{listed.length} currently operating · tap a row</p>
+          <p className="muted station-count">{filtered.length} currently operating · tap a row</p>
           <ul className="station-list">
-            {listed.map((s) => (
-              <li key={s.code}>
-                <button type="button" className="station-row" onClick={() => setSelected(s)}>
-                  <span className={`kind-dot kind-${primaryKind(s)}`} />
-                  <span className="station-row-code">{s.code}</span>
-                  <span className="station-row-name">{s.name}</span>
-                  <span className="station-row-kind">{s.kinds.map((k) => kindLabel(k as StationKind)).join(' · ')}</span>
-                </button>
-              </li>
-            ))}
+            {filtered.map((s) => {
+              const types = stationSensorTypes(s)
+              return (
+                <li key={s.code}>
+                  <button type="button" className="station-row" onClick={() => setSelected(s)}>
+                    <span className="station-row-icons">
+                      {types.map((type) => (
+                        <SensorTypeIcon key={type} type={type} size={18} title={type} />
+                      ))}
+                    </span>
+                    <span className="station-row-code">{s.code}</span>
+                    <span className="station-row-name">{s.name}</span>
+                    <span className="station-row-kind">{types.join(' · ')}</span>
+                  </button>
+                </li>
+              )
+            })}
           </ul>
         </section>
 
@@ -151,11 +137,12 @@ export function SensorsPage({ data }: { data: GeoNetBundle }) {
             showStations
             showAllStations
             showFullLink={false}
-            legend="stations"
+            legend="types"
             onSelectStation={setSelected}
             selectedCode={selected?.code}
             focusStation={selected}
             stationFilter={(s) => stationMatchesFilter(s, filter)}
+            sensorTypeFilter={filter}
           />
         </div>
       </div>

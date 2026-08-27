@@ -1,6 +1,8 @@
 import { brandIcon } from '../brand'
 import { QuakeMap } from '../components/QuakeMap'
+import { SensorTypeIcon } from '../components/SensorTypeIcon'
 import { Methods, Note, PageHero, StatChips, Steps, ThemeFrame } from '../components/science/ThemeKit'
+import { primarySensorType, stationSensorTypes } from '../api/geonet'
 import type { GeoNetBundle } from '../hooks/useGeoNetData'
 import './Pages.css'
 
@@ -36,7 +38,7 @@ export function TsunamiPage({ data }: { data: GeoNetBundle }) {
             showStations
             showAllStations
             showFullLink={false}
-            legend="stations"
+            legend="types"
           />
         </div>
       }
@@ -45,19 +47,20 @@ export function TsunamiPage({ data }: { data: GeoNetBundle }) {
           <div className="card list-panel">
             <h2 className="section-title">Currently operating sea sensors</h2>
             <ul className="quake-list station-mini">
-              {listed.map((s) => (
+              {listed.map((s) => {
+                const type = primarySensorType(s)
+                return (
                 <li key={s.code}>
-                  <span className={`kind-dot kind-${s.kinds.includes('dart') ? 'dart' : 'coastal'}`} />
+                  <SensorTypeIcon type={type} size={20} />
                   <div>
                     <strong>
                       {s.code} · {s.name}
                     </strong>
-                    <p className="muted">
-                      {s.kinds.includes('dart') ? 'DART bottom pressure' : 'Coastal sea-level gauge'}
-                    </p>
+                    <p className="muted">{stationSensorTypes(s).join(' · ')}</p>
                   </div>
                 </li>
-              ))}
+                )
+              })}
             </ul>
           </div>
           <Steps

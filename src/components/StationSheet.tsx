@@ -2,8 +2,8 @@ import {
   cameraImageUrl,
   formatMag,
   formatRelativeTime,
-  kindLabel,
   primaryKind,
+  stationSensorTypes,
   type CameraFeature,
   type QuakeFeature,
   type StationPoint,
@@ -14,6 +14,7 @@ import { downsampleMinMax } from '../api/miniseed'
 import { useStationLive } from '../hooks/useStationLive'
 import { AnnotatedChart } from './AnnotatedChart'
 import { PeriodPicker, periodCaption, CHART_PERIODS, type ChartPeriod } from './PeriodPicker'
+import { SensorTypeIcon } from './SensorTypeIcon'
 import './StationSheet.css'
 
 const KIND_BLURB: Record<string, string> = {
@@ -138,7 +139,12 @@ export function StationSheet({
         </button>
         <div className="station-sheet-titles">
           <p className="station-kicker">
-            {station.kinds.map(kindLabel).join(' · ')}
+            {stationSensorTypes(station).map((type) => (
+              <span key={type} className="sensor-type-pill">
+                <SensorTypeIcon type={type} size={16} />
+                {type}
+              </span>
+            ))}
           </p>
           <h2 id="station-sheet-title">
             <span className="station-code">{station.code}</span>

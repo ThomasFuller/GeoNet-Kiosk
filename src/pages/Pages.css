@@ -220,6 +220,22 @@
   text-transform: uppercase;
 }
 
+.filter-chip {
+  min-height: 48px;
+  border: 1px solid var(--border);
+  background: var(--bg-card);
+  border-radius: 999px;
+  padding: 0 16px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.filter-chip.active {
+  background: var(--brand);
+  color: #fff;
+  border-color: var(--brand);
+}
+
 .sensor-explore {
   display: grid;
   grid-template-columns: 460px minmax(0, 1fr);
@@ -236,63 +252,58 @@
   gap: 8px;
 }
 
-.sensor-filters {
+.sensor-type-list {
   display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
+  flex-direction: column;
+  gap: 2px;
+  overflow: auto;
+  flex: 0 1 auto;
+  min-height: 0;
 }
 
-.filter-chip,
-.featured-chip,
-.letter-chip {
-  min-height: 48px;
-  border: 1px solid var(--border);
-  background: var(--bg-card);
-  border-radius: 999px;
-  padding: 0 16px;
-  font-weight: 500;
-  cursor: pointer;
-}
-
-.filter-chip.active,
-.letter-chip.active,
-.featured-chip:active {
-  background: var(--brand);
-  color: #fff;
-  border-color: var(--brand);
-}
-
-.featured-row {
-  display: flex;
+.sensor-type-row {
+  display: grid;
+  grid-template-columns: 28px minmax(0, 1fr) auto;
   align-items: center;
-  gap: 8px;
-  flex-wrap: wrap;
+  gap: 10px;
+  width: 100%;
+  min-height: 40px;
+  border: 0;
+  background: transparent;
+  border-radius: var(--radius);
+  padding: 4px 8px;
+  text-align: left;
+  cursor: pointer;
+  font-weight: 500;
 }
 
-.featured-label {
+.sensor-type-row.active {
+  background: var(--bg-elevated);
+  box-shadow: inset 0 0 0 2px var(--brand);
+}
+
+.sensor-type-name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 14px;
+}
+
+.sensor-type-count {
+  font-variant-numeric: tabular-nums;
   font-size: 13px;
   color: var(--ink-muted);
-  font-weight: 500;
 }
 
-.featured-chip {
-  min-height: 44px;
-  background: color-mix(in srgb, var(--val-1) 70%, white);
-  color: var(--puia-100);
-}
-
-.letter-bar {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 4px;
-}
-
-.letter-chip {
-  min-height: 40px;
-  min-width: 40px;
-  padding: 0;
-  border-radius: var(--radius);
-  font-size: 14px;
+.sensor-type-all {
+  width: 18px;
+  height: 18px;
+  margin: 0 auto;
+  border: 2px solid var(--brand);
+  border-radius: 4px;
+  background:
+    linear-gradient(135deg, #ff0000 50%, transparent 50%),
+    linear-gradient(45deg, #00cccc 50%, #006600 50%);
 }
 
 .station-count {
@@ -314,7 +325,7 @@
   width: 100%;
   min-height: 64px;
   display: grid;
-  grid-template-columns: 16px 72px minmax(0, 1fr);
+  grid-template-columns: auto 72px minmax(0, 1fr);
   grid-template-rows: auto auto;
   column-gap: 10px;
   align-items: center;
@@ -330,21 +341,12 @@
   background: color-mix(in srgb, var(--whenua-05) 80%, white);
 }
 
-.kind-dot {
+.station-row-icons {
   grid-row: 1 / span 2;
-  width: 14px;
-  height: 14px;
-  border-radius: 50%;
-  border: 2px solid var(--brand);
-  background: #fff;
+  display: flex;
+  align-items: center;
+  gap: 4px;
 }
-
-.kind-dot.kind-geomag { border-color: var(--val-5); background: var(--val-1); }
-.kind-dot.kind-gnss { border-color: var(--whenua-20); background: var(--whenua-05); }
-.kind-dot.kind-dart,
-.kind-dot.kind-coastal { border-color: #1d4e89; background: var(--wai-00); }
-.kind-dot.kind-envirosensor,
-.kind-dot.kind-scandoas { border-color: var(--val-4); background: var(--val-0); }
 
 .station-row-code {
   font-family: var(--font-heading);

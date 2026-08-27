@@ -9,10 +9,14 @@ import {
   magnitudeRadius,
   mapLongitude,
   primaryKind,
+  primarySensorType,
+  SENSOR_TYPE_NAMES,
   type QuakeFeature,
+  type SensorTypeName,
   type StationPoint,
 } from '../api/geonet'
 import { brandIcon } from '../brand'
+import { sensorTypeSvg, SensorTypeIcon } from './SensorTypeIcon'
 import './QuakeMap.css'
 
 const NZ_CENTER: [number, number] = [-41.15, 173.6]
@@ -64,6 +68,24 @@ const stationIcon = L.divIcon({
   iconAnchor: [6, 6],
 })
 
+const sensorIconCache = new Map<string, L.DivIcon>()
+
+function leafletSensorIcon(type: SensorTypeName, selected: boolean): L.DivIcon {
+  const key = `${type}:${selected ? 1 : 0}`
+  const cached = sensorIconCache.get(key)
+  if (cached) return cached
+  const glyph = selected ? 28 : 22
+  const size = selected ? 36 : 32
+  const icon = L.divIcon({
+    className: `sensor-type-marker${selected ? ' is-selected' : ''}`,
+    html: `<span class="sensor-type-hit">${sensorTypeSvg(type, glyph)}</span>`,
+    iconSize: [size, size],
+    iconAnchor: [size / 2, size / 2],
+  })
+  sensorIconCache.set(key, icon)
+  return icon
+}
+
 const KIND_COLOR: Record<string, string> = {
   seismic: '#320719',
   geomag: '#832c82',
@@ -85,7 +107,8 @@ type Props = {
   selectedCode?: string | null
   focusStation?: StationPoint | null
   stationFilter?: (station: StationPoint) => boolean
-  legend?: 'quakes' | 'stations'
+  legend?: 'quakes' | 'stations' | 'types' | 'none'
+  sensorTypeFilter?: SensorTypeName | 'all'
 }
 
 export function QuakeMap({
@@ -100,6 +123,7 @@ export function QuakeMap({
   focusStation = null,
   stationFilter,
   legend = 'quakes',
+  sensorTypeFilter = 'all',
 }: Props) {
   const visibleStations = useMemo(() => {
     if (!showStations) return []
@@ -107,6 +131,11 @@ export function QuakeMap({
     if (showAllStations) return filtered
     return filtered.filter((_, i) => i % 5 === 0).slice(0, 180)
   }, [stations, showStations, showAllStations, stationFilter])
+
+  const visibleTypes = useMemo(() => {
+    const present = new Set(visibleStations.map((s) => primarySensorType(s, sensorTypeFilter)))
+    return SENSOR_TYPE_NAMES.filter((type) => present.has(type))
+  }, [visibleStations, sensorTypeFilter])
 
   const touchStations = Boolean(onSelectStation)
 
@@ -140,6 +169,32 @@ export function QuakeMap({
           const kind = primaryKind(s)
           const color = KIND_COLOR[kind] ?? '#320719'
           const selected = s.code === selectedCode
+          if (legend === 'types') {
+            const type = primarySensorType(s, sensorTypeFilter)
+            return (
+              <Marker
+                key={s.code}
+                position={[s.lat, mapLongitude(s.lon)]}
+                icon={leafletSensorIcon(type, selected)}
+                zIndexOffset={selected ? 1000 : 0}
+                eventHandlers={
+                  onSelectStation
+                    ? {
+                        click: () => onSelectStation(s),
+                      }
+                    : undefined
+                }
+              >
+                {!touchStations && (
+                  <Popup>
+                    <strong>{s.code}</strong>
+                    <div>{s.name}</div>
+                    <div>{type}</div>
+                  </Popup>
+                )}
+              </Marker>
+            )
+          }
           if (touchStations) {
             return (
               <CircleMarker
@@ -194,8 +249,22 @@ export function QuakeMap({
         })}
       </MapContainer>
 
-      <div className="map-legend">
-        {legend === 'stations' ? (
+      {legend !== 'none' && (
+      <div className={`map-legend${legend === 'types' ? ' sensor-legend' : ''}`}>
+        {legend === 'types' ? (
+          <>
+            <div className="legend-title">Sensor types</div>
+            {visibleTypes.slice(0, 6).map((type) => (
+              <div className="legend-row" key={type}>
+                <SensorTypeIcon type={type} size={16} />
+                {type}
+              </div>
+            ))}
+            {visibleTypes.length > 6 && (
+              <div className="legend-row">Use the list to pick a type</div>
+            )}
+          </>
+        ) : legend === 'stations' ? (
           <>
             <div className="legend-title">Touch a sensor</div>
             <div className="legend-row">
@@ -236,6 +305,7 @@ export function QuakeMap({
           </Link>
         )}
       </div>
+      )}
     </div>
   )
 }

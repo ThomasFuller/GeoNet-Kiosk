@@ -61,6 +61,28 @@ export type TildeSeries = {
 
 export type StationKind = 'seismic' | 'geomag' | 'gnss' | 'dart' | 'coastal' | 'envirosensor' | 'scandoas'
 
+export const SENSOR_TYPE_NAMES = [
+  'Air pressure sensor',
+  'Broadband seismometer',
+  'Coastal sea level gauge',
+  'DART bottom pressure recorder',
+  'DOAS spectrometer',
+  'Environmental sensor',
+  'Geomagnetic sensor',
+  'GNSS/GPS',
+  'Lake level gauge',
+  'Short period seismometer',
+  'Strong motion sensor',
+] as const
+
+export type SensorTypeName = (typeof SENSOR_TYPE_NAMES)[number]
+
+const SENSOR_TYPE_SET = new Set<string>(SENSOR_TYPE_NAMES)
+
+export function isSensorTypeName(value: string): value is SensorTypeName {
+  return SENSOR_TYPE_SET.has(value)
+}
+
 export type StationPoint = {
   code: string
   name: string
@@ -68,6 +90,7 @@ export type StationPoint = {
   lon: number
   elevation: number
   kinds: StationKind[]
+  sensorTypes: SensorTypeName[]
 }
 
 export type TildeSeriesRef = {
@@ -225,19 +248,40 @@ function kindFromSensorType(type: string): StationKind | null {
   }
 }
 
+function kindToDefaultType(kind: StationKind): SensorTypeName {
+  switch (kind) {
+    case 'geomag':
+      return 'Geomagnetic sensor'
+    case 'gnss':
+      return 'GNSS/GPS'
+    case 'dart':
+      return 'DART bottom pressure recorder'
+    case 'coastal':
+      return 'Coastal sea level gauge'
+    case 'envirosensor':
+      return 'Environmental sensor'
+    case 'scandoas':
+      return 'DOAS spectrometer'
+    default:
+      return 'Broadband seismometer'
+  }
+}
+
 function stationsFromNetworkFeatures(features: NetworkStationFeature[]): StationPoint[] {
   const map = new Map<string, StationPoint>()
   for (const feature of features) {
     const code = feature.properties?.Code
-    const kind = kindFromSensorType(feature.properties?.SensorType ?? '')
+    const typeName = feature.properties?.SensorType ?? ''
+    const kind = kindFromSensorType(typeName)
     const coords = feature.geometry?.coordinates
-    if (!code || !kind || !coords || coords.length < 2) continue
+    if (!code || !kind || !isSensorTypeName(typeName) || !coords || coords.length < 2) continue
     const lon = mapLongitude(Number(coords[0]))
     const lat = Number(coords[1])
     if (!Number.isFinite(lat) || !Number.isFinite(lon)) continue
     const existing = map.get(code)
     if (existing) {
       if (!existing.kinds.includes(kind)) existing.kinds.push(kind)
+      if (!existing.sensorTypes.includes(typeName)) existing.sensorTypes.push(typeName)
       continue
     }
     map.set(code, {
@@ -247,6 +291,7 @@ function stationsFromNetworkFeatures(features: NetworkStationFeature[]): Station
       lon,
       elevation: 0,
       kinds: [kind],
+      sensorTypes: [typeName],
     })
   }
   return [...map.values()]
@@ -391,11 +436,15 @@ export function mergeStationsWithTilde(
     const refs = catalog[station.code]
     if (!refs?.length) return station
     const kinds = [...station.kinds]
+    const sensorTypes = [...station.sensorTypes]
     for (const ref of refs) {
       const kind = kindOf[ref.domain]
-      if (kind && !kinds.includes(kind)) kinds.push(kind)
+      if (!kind || kinds.includes(kind)) continue
+      kinds.push(kind)
+      const typeName = kindToDefaultType(kind)
+      if (!sensorTypes.includes(typeName)) sensorTypes.push(typeName)
     }
-    return { ...station, kinds }
+    return { ...station, kinds, sensorTypes }
   })
 }
 
@@ -606,6 +655,31 @@ export function kindLabel(kind: StationKind): string {
 export function primaryKind(station: StationPoint): StationKind {
   const order: StationKind[] = ['dart', 'coastal', 'geomag', 'seismic', 'envirosensor', 'scandoas', 'gnss']
   return order.find((k) => station.kinds.includes(k)) ?? station.kinds[0] ?? 'seismic'
+}
+
+const SENSOR_TYPE_PRIORITY: SensorTypeName[] = [
+  'DART bottom pressure recorder',
+  'Coastal sea level gauge',
+  'Lake level gauge',
+  'Geomagnetic sensor',
+  'DOAS spectrometer',
+  'Broadband seismometer',
+  'Short period seismometer',
+  'Strong motion sensor',
+  'Air pressure sensor',
+  'Environmental sensor',
+  'GNSS/GPS',
+]
+
+export function stationSensorTypes(station: StationPoint): SensorTypeName[] {
+  if (station.sensorTypes?.length) return station.sensorTypes
+  return [kindToDefaultType(primaryKind(station))]
+}
+
+export function primarySensorType(station: StationPoint, preferred?: SensorTypeName | 'all'): SensorTypeName {
+  const types = stationSensorTypes(station)
+  if (preferred && preferred !== 'all' && types.includes(preferred)) return preferred
+  return SENSOR_TYPE_PRIORITY.find((type) => types.includes(type)) ?? types[0] ?? 'Broadband seismometer'
 }
 
 export function sumMagAtLeast(buckets: MagBuckets, min: number): number {
