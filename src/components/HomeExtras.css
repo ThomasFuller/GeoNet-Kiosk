@@ -3,17 +3,29 @@
   min-height: 0;
 }
 
-.hero-copy h1 {
+.hero-copy {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+.hero-text {
+  max-width: 56ch;
+  padding: 16px 20px 14px;
+  background: var(--bg-elevated);
+}
+
+.hero-text h1 {
   font-size: 36px;
   line-height: 1.05;
   max-width: 16ch;
-  margin-bottom: 6px;
+  margin-bottom: 8px;
   color: var(--brand);
   font-weight: 300;
 }
 
-.hero-copy > p {
-  max-width: 54ch;
+.hero-text p {
   font-size: 15px;
   color: var(--ink-muted);
   font-weight: 300;
@@ -23,7 +35,6 @@
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
-  margin-top: 8px;
 }
 
 .hero-facts span {
@@ -46,9 +57,12 @@
 }
 
 .hero-news {
-  margin-top: 8px;
-  font-size: 13px;
   max-width: 62ch;
+  margin: 0;
+  padding: 6px 12px;
+  font-size: 13px;
+  color: var(--ink-muted);
+  background: var(--bg-elevated);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;

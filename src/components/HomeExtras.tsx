@@ -38,8 +38,10 @@ export function Hero({
   return (
     <div className="hero">
       <div className="hero-copy">
-        <h1>{t.title}</h1>
-        <p>{t.blurb}</p>
+        <div className="hero-text card">
+          <h1>{t.title}</h1>
+          <p>{t.blurb}</p>
+        </div>
         <div className="hero-facts">
           <span>
             <strong>{quakes}</strong> quakes · 7 days
@@ -51,7 +53,7 @@ export function Hero({
             <strong>{unrestCount}</strong> {unrestCount === 1 ? 'volcano' : 'volcanoes'} unrest
           </span>
         </div>
-        {news && <p className="hero-news muted">{news.title.trim()}</p>}
+        {news && <p className="hero-news card">{news.title.trim()}</p>}
       </div>
     </div>
   )
