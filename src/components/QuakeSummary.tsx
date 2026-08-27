@@ -1,13 +1,21 @@
 import { Link } from 'react-router-dom'
-import { sumMagAtLeast, type QuakeStats } from '../api/geonet'
+import {
+  formatMag,
+  formatRelativeTime,
+  sumMagAtLeast,
+  type QuakeFeature,
+  type QuakeStats,
+} from '../api/geonet'
 import { brandIcon } from '../brand'
 
 export function QuakeSummary({
   stats,
   feltReports,
+  latest,
 }: {
   stats: QuakeStats | null
   feltReports: number
+  latest?: QuakeFeature
 }) {
   const total = stats ? sumMagAtLeast(stats.days7, -1) : '—'
   const m5 = stats ? sumMagAtLeast(stats.days7, 5) : '—'
@@ -33,6 +41,12 @@ export function QuakeSummary({
           <span>Felt reports</span>
         </div>
       </div>
+      {latest && (
+        <p className="latest-quake">
+          Latest: <strong>{formatMag(latest.properties.magnitude)}</strong> {latest.properties.locality} ·{' '}
+          {formatRelativeTime(latest.properties.time)} · {latest.properties.depth.toFixed(0)} km deep
+        </p>
+      )}
       <Link to="/earthquakes" className="link-arrow">
         View all earthquakes <img src={brandIcon('right-arrow.svg')} alt="" />
       </Link>

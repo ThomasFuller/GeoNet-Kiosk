@@ -80,9 +80,11 @@ export type TildeSeriesRef = {
   locality?: string
   lat?: number
   lon?: number
-  period: '6h' | '1d' | '7d'
+  period: '6h' | '1d' | '7d' | '30d'
   latestRecord?: string
 }
+
+export type ChartPeriod = '1d' | '7d' | '30d'
 
 export type ChannelInfo = {
   location: string
@@ -382,11 +384,22 @@ export function mergeStationsWithTilde(
   return [...map.values()]
 }
 
-export async function fetchTildeSeries(ref: TildeSeriesRef): Promise<TildeSeries | null> {
+function tildeAggregation(method: string, period: ChartPeriod): string {
+  const alreadyCoarse = method === '1d' || method === '1h' || method === '6h'
+  if (alreadyCoarse) return ''
+  if (period === '7d') return '?aggregationPeriod=1h&aggregationFunction=mean'
+  if (period === '30d') return '?aggregationPeriod=6h&aggregationFunction=mean'
+  return ''
+}
+
+export async function fetchTildeSeries(
+  ref: TildeSeriesRef,
+  period: ChartPeriod = '1d',
+): Promise<TildeSeries | null> {
   const sensor = ref.sensorCode === 'nil' ? '-' : ref.sensorCode
   const aspect = ref.aspect === 'nil' ? '-' : ref.aspect
   const data = await getJson<TildeSeries[]>(
-    `${TILDE}/v4/data/${ref.domain}/${ref.station}/${ref.name}/${sensor}/${ref.method}/${aspect}/latest/${ref.period}`,
+    `${TILDE}/v4/data/${ref.domain}/${ref.station}/${ref.name}/${sensor}/${ref.method}/${aspect}/latest/${period}${tildeAggregation(ref.method, period)}`,
   )
   return data[0] ?? null
 }
@@ -522,13 +535,19 @@ export function haversineKm(lat1: number, lon1: number, lat2: number, lon2: numb
   return 2 * R * Math.asin(Math.min(1, Math.sqrt(s)))
 }
 
-export function nearbyQuakes(station: StationPoint, quakes: QuakeFeature[], km = 200, limit = 5): QuakeFeature[] {
+export function nearbyQuakes(
+  station: StationPoint,
+  quakes: QuakeFeature[],
+  km = 200,
+  limit = 5,
+  sinceMs?: number,
+): QuakeFeature[] {
   return quakes
     .map((q) => {
       const [lon, lat] = q.geometry.coordinates
       return { q, d: haversineKm(station.lat, station.lon, lat, lon) }
     })
-    .filter((x) => x.d <= km)
+    .filter((x) => x.d <= km && (sinceMs == null || +new Date(x.q.properties.time) >= sinceMs))
     .sort((a, b) => +new Date(b.q.properties.time) - +new Date(a.q.properties.time))
     .slice(0, limit)
     .map((x) => x.q)

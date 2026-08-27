@@ -14,6 +14,7 @@ import {
   type StationPoint,
 } from '../api/geonet'
 import { brandIcon } from '../brand'
+import { PeriodPicker, type ChartPeriod } from '../components/PeriodPicker'
 import { QuakeMap } from '../components/QuakeMap'
 import { StationSheet } from '../components/StationSheet'
 import type { GeoNetBundle } from '../hooks/useGeoNetData'
@@ -184,6 +185,7 @@ export function SensorsPage({ data }: { data: GeoNetBundle }) {
   const [selected, setSelected] = useState<StationPoint | null>(null)
   const [filter, setFilter] = useState<(typeof SENSOR_FILTERS)[number]['id']>('all')
   const [letter, setLetter] = useState<string | null>(null)
+  const [period, setPeriod] = useState<ChartPeriod>('1d')
 
   const filtered = useMemo(
     () =>
@@ -210,11 +212,14 @@ export function SensorsPage({ data }: { data: GeoNetBundle }) {
 
   return (
     <div className="page section-page sensor-page">
-      <PageHero
-        title="Sensor playground"
-        blurb="Touch a glowing dot or a name in the list. We’ll open a big live chart — ground wiggles, magnets, GPS and the sea."
-        icon={brandIcon('layers.svg')}
-      />
+      <div className="sensor-hero">
+        <PageHero
+          title="Sensor playground"
+          blurb="Touch a glowing dot or a name in the list. Then pick 24 hours, 7 days or 30 days to stretch the live charts."
+          icon={brandIcon('layers.svg')}
+        />
+        <PeriodPicker value={period} onChange={setPeriod} />
+      </div>
 
       <div className="sensor-explore">
         <section className="card station-browser">
@@ -296,6 +301,8 @@ export function SensorsPage({ data }: { data: GeoNetBundle }) {
           catalog={data.tildeByStation}
           cameras={data.cameras}
           quakes={data.quakes}
+          period={period}
+          onPeriodChange={setPeriod}
           onClose={() => setSelected(null)}
         />
       )}

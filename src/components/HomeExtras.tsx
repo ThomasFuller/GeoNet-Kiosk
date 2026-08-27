@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom'
+import { sumMagAtLeast, type NewsItem, type QuakeStats } from '../api/geonet'
 import { brandIcon } from '../brand'
 import './HomeExtras.css'
 
@@ -6,25 +7,55 @@ const copy = {
   en: {
     title: 'Our dynamic land, in focus',
     blurb:
-      'The official source for monitoring Aotearoa New Zealand’s geohazards, with live data and the science that keeps us informed.',
+      'Hundreds of sensors listen to Aotearoa every second — shakes, volcanoes, magnets and the sea. This kiosk shows the same live GeoNet data scientists use.',
     felt: 'Help our scientists by reporting what you felt.',
     report: 'Felt It?',
   },
   mi: {
     title: 'Tō tātou whenua hihiri, kei te arotahi',
     blurb:
-      'Te puna whaimana mō te aroturuki i ngā mōrearea o te whenua o Aotearoa, me ngā raraunga ora.',
+      'E rongo ana ngā pūoko i Aotearoa i ia hekona — rū whenua, puia, autō me te moana. Ko ngā raraunga ora o GeoNet tēnei.',
     felt: 'Āwhina i ā mātou kaipūtaiao mā te pūrongo i tāu i rongo ai.',
     report: 'I rongo koe?',
   },
 } as const
 
-export function Hero({ teReo }: { teReo: boolean }) {
+export function Hero({
+  teReo,
+  stats,
+  sensorCount,
+  unrestCount,
+  news,
+}: {
+  teReo: boolean
+  stats: QuakeStats | null
+  sensorCount: number
+  unrestCount: number
+  news?: NewsItem
+}) {
   const t = teReo ? copy.mi : copy.en
+  const quakes = stats ? sumMagAtLeast(stats.days7, -1) : '—'
   return (
     <div className="hero">
-      <h1>{t.title}</h1>
-      <p>{t.blurb}</p>
+      <div className="hero-copy">
+        <h1>{t.title}</h1>
+        <p>{t.blurb}</p>
+        <div className="hero-facts">
+          <span>
+            <strong>{quakes}</strong> quakes · 7 days
+          </span>
+          <span>
+            <strong>{sensorCount || '—'}</strong> sensors listening
+          </span>
+          <span>
+            <strong>{unrestCount}</strong> {unrestCount === 1 ? 'volcano' : 'volcanoes'} unrest
+          </span>
+        </div>
+        {news && <p className="hero-news muted">{news.title.trim()}</p>}
+      </div>
+      <div className="hero-dots" aria-hidden="true">
+        <img src={brandIcon('pattern-altogether.svg')} alt="" />
+      </div>
     </div>
   )
 }

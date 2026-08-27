@@ -82,7 +82,14 @@ export function AnnotatedChart({
   }
 
   const spanSec = tSpan / 1000
-  const xLeft = spanSec >= 90 ? `${Math.round(spanSec / 60)} min ago` : `${Math.round(spanSec)} s ago`
+  const xLeft =
+    spanSec >= 86_400 * 1.5
+      ? `${Math.round(spanSec / 86_400)} days ago`
+      : spanSec >= 3_600 * 2
+        ? `${Math.round(spanSec / 3_600)} hours ago`
+        : spanSec >= 90
+          ? `${Math.round(spanSec / 60)} min ago`
+          : `${Math.round(spanSec)} s ago`
 
   return (
     <section className={`anno-chart card accent-${accent}`}>

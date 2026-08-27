@@ -15,16 +15,27 @@ export function HomePage({
   teReo: boolean
   onReport: () => void
 }) {
+  const latest = [...data.quakes].sort(
+    (a, b) => +new Date(b.properties.time) - +new Date(a.properties.time),
+  )[0]
+  const unrest = data.volcanoes.filter((v) => v.properties.level > 0).length
+
   return (
     <div className="page home-page">
       <div className="home-grid">
         <div className="home-main">
-          <Hero teReo={teReo} />
+          <Hero
+            teReo={teReo}
+            stats={data.stats}
+            sensorCount={data.stations.length}
+            unrestCount={unrest}
+            news={data.news[0]}
+          />
           <FeltItBanner teReo={teReo} onReport={onReport} />
           <QuakeMap quakes={data.quakes} stations={data.stations} compact />
         </div>
         <aside className="home-side">
-          <QuakeSummary stats={data.stats} feltReports={data.feltReports} />
+          <QuakeSummary stats={data.stats} feltReports={data.feltReports} latest={latest} />
           <VolcanoAlerts volcanoes={data.volcanoes} />
           <LiveCamera cameras={data.cameras} bust={data.updatedAt} />
         </aside>

@@ -18,14 +18,16 @@ export function LiveCamera({ cameras, bust }: { cameras: CameraFeature[]; bust: 
   }
 
   const src = cameraImageUrl(
-    cam.properties['latest-image-medium'] || cam.properties['latest-image-thumb'],
+    cam.properties['latest-image-large'] ||
+      cam.properties['latest-image-medium'] ||
+      cam.properties['latest-image-thumb'],
     bust,
   )
 
   return (
     <section className="card side-card camera-card">
       <h3 className="section-title">
-        <CameraIcon />
+        <img src={brandIcon('camera.svg')} alt="" />
         Volcano cameras
       </h3>
       <div className="camera-frame">
@@ -42,14 +44,5 @@ export function LiveCamera({ cameras, bust }: { cameras: CameraFeature[]; bust: 
         View all cameras <img src={brandIcon('right-arrow.svg')} alt="" />
       </Link>
     </section>
-  )
-}
-
-function CameraIcon() {
-  return (
-    <svg viewBox="0 0 24 24" width="28" height="28" aria-hidden="true">
-      <rect x="3" y="7" width="13" height="10" rx="2" fill="none" stroke="currentColor" strokeWidth="1.8" />
-      <path d="M16 10.5 21 8v8l-5-2.5" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="round" />
-    </svg>
   )
 }

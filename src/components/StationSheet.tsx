@@ -10,8 +10,10 @@ import {
   type TildeSeries,
   type TildeSeriesRef,
 } from '../api/geonet'
+import { downsampleMinMax } from '../api/miniseed'
 import { useStationLive } from '../hooks/useStationLive'
 import { AnnotatedChart } from './AnnotatedChart'
+import { PeriodPicker, periodCaption, CHART_PERIODS, type ChartPeriod } from './PeriodPicker'
 import './StationSheet.css'
 
 const KIND_BLURB: Record<string, string> = {
@@ -24,7 +26,10 @@ const KIND_BLURB: Record<string, string> = {
   scandoas: 'This one sniffs volcanic gas riding on the wind.',
 }
 
-function tildeCopy(ref: TildeSeriesRef): {
+function tildeCopy(
+  ref: TildeSeriesRef,
+  period: ChartPeriod,
+): {
   title: string
   annotation: string
   yCaption: string
@@ -32,12 +37,13 @@ function tildeCopy(ref: TildeSeriesRef): {
   accent: 'puia' | 'val' | 'wai' | 'whenua'
   color: string
 } {
+  const xCaption = periodCaption(period)
   if (ref.domain === 'geomag') {
     return {
       title: "Earth's magnetic hug",
       annotation: 'The line is how strong Earth’s magnetic field is here. It wiggles a little every day as the Sun and Earth chat.',
       yCaption: 'Strength of the magnetic field. Unit: nanotesla (nT) — a tiny magnetism unit.',
-      xCaption: 'Time, newest on the right. Last few hours of 1-minute readings.',
+      xCaption,
       accent: 'val',
       color: '#832c82',
     }
@@ -47,7 +53,7 @@ function tildeCopy(ref: TildeSeriesRef): {
       title: 'Is the land creeping?',
       annotation: 'GPS watches this pin. Up means the ground rose a little; down means it settled. Changes are usually smaller than a fingernail.',
       yCaption: 'How far the land has moved up or down, in metres.',
-      xCaption: 'Each dot is about a day. Newest on the right.',
+      xCaption,
       accent: 'whenua',
       color: '#b38c65',
     }
@@ -57,7 +63,7 @@ function tildeCopy(ref: TildeSeriesRef): {
       title: 'The water’s height',
       annotation: 'This is the sea surface. A tsunami would look like a sudden, unusual jump — not the gentle tide wobble.',
       yCaption: 'Water height in metres. Scientists compare this with the usual tide.',
-      xCaption: 'Time, newest on the right.',
+      xCaption,
       accent: 'wai',
       color: '#1d4e89',
     }
@@ -67,7 +73,7 @@ function tildeCopy(ref: TildeSeriesRef): {
       title: 'Volcano breath',
       annotation: 'Some volcanoes puff sulphur dioxide. This chart is that invisible breath, not a warning siren.',
       yCaption: 'How much volcanic gas the sensor is counting.',
-      xCaption: 'Time, newest on the right.',
+      xCaption,
       accent: 'val',
       color: '#954990',
     }
@@ -76,7 +82,7 @@ function tildeCopy(ref: TildeSeriesRef): {
     title: ref.name.replace(/-/g, ' '),
     annotation: 'A live GeoNet measurement from this place — the same numbers scientists use.',
     yCaption: 'What this sensor is counting, in its scientific units.',
-    xCaption: 'Time, newest on the right.',
+    xCaption,
     accent: 'puia',
     color: '#e83b00',
   }
@@ -84,9 +90,15 @@ function tildeCopy(ref: TildeSeriesRef): {
 
 function tildePoints(series: TildeSeries | null): { t: number; v: number }[] {
   if (!series?.data?.length) return []
-  return series.data
+  const raw = series.data
     .filter((d) => Number.isFinite(d.val))
     .map((d) => ({ t: new Date(d.ts).getTime(), v: d.val }))
+  if (raw.length <= 720) return raw
+  const slim = downsampleMinMax(
+    raw.map((p) => p.v),
+    raw.map((p) => p.t),
+  )
+  return slim.times.map((t, i) => ({ t, v: slim.values[i] }))
 }
 
 export function StationSheet({
@@ -94,15 +106,19 @@ export function StationSheet({
   catalog,
   cameras,
   quakes,
+  period,
+  onPeriodChange,
   onClose,
 }: {
   station: StationPoint
   catalog: Record<string, TildeSeriesRef[]>
   cameras: CameraFeature[]
   quakes: QuakeFeature[]
+  period: ChartPeriod
+  onPeriodChange: (period: ChartPeriod) => void
   onClose: () => void
 }) {
-  const live = useStationLive(station, catalog, cameras, quakes)
+  const live = useStationLive(station, catalog, cameras, quakes, period)
   const kind = primaryKind(station)
   const showWave =
     station.kinds.includes('seismic') &&
@@ -112,6 +128,7 @@ export function StationSheet({
     ? live.waveform.times.map((t, i) => ({ t, v: live.waveform!.values[i] }))
     : []
   const lastTilde = live.tilde.find((t) => t.series?.data?.length)?.series
+  const periodLabel = CHART_PERIODS.find((p) => p.id === period)?.label ?? '24 hours'
 
   return (
     <div className="station-sheet" role="dialog" aria-modal="true" aria-labelledby="station-sheet-title">
@@ -128,6 +145,7 @@ export function StationSheet({
             {station.name}
           </h2>
           <p className="station-blurb">{KIND_BLURB[kind]}</p>
+          <PeriodPicker value={period} onChange={onPeriodChange} />
         </div>
         <div className="station-facts">
           <div>
@@ -157,7 +175,7 @@ export function StationSheet({
                   ? 'How fast the ground is moving up and down, in micrometres per second (smaller than a millimetre).'
                   : `Ground motion in ${live.waveform?.displayUnit ?? 'instrument counts'}.`
               }
-              xCaption="Time across the last minute or two. Newest wiggle is on the right."
+              xCaption="This live wiggle is the last minute or two — not the 24 hour / 7 day / 30 day window."
               annotation={
                 live.sensorName
                   ? `This wiggle is the ground shaking. Quiet earth = tiny line. A quake looks like a sudden bigger wiggle. Sensor: ${live.sensorName} (${live.waveform?.channel ?? 'vertical'}).`
@@ -176,7 +194,7 @@ export function StationSheet({
           )}
 
           {live.tilde.map(({ ref, series, error }) => {
-            const copy = tildeCopy(ref)
+            const copy = tildeCopy(ref, period)
             const points = tildePoints(series)
             const last = series?.data?.[series.data.length - 1]
             return (
@@ -216,10 +234,10 @@ export function StationSheet({
             )}
           </section>
           <section className="card station-side-card">
-            <h3>Latest shakes nearby</h3>
+            <h3>Shakes nearby · {periodLabel}</h3>
             {live.quakes.length === 0 ? (
               <p className="muted side-empty">
-                No recent earthquakes close to this sensor. Aotearoa is having a calm moment here.
+                No earthquakes close to this sensor in the last {periodLabel.toLowerCase()}.
               </p>
             ) : (
               <ul className="sheet-quakes">

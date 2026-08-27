@@ -10,7 +10,7 @@ export function VolcanoAlerts({ volcanoes }: { volcanoes: VolcanoFeature[] }) {
   const list = [...volcanoes]
     .sort((a, b) => b.properties.level - a.properties.level)
     .filter((v) => v.properties.level > 0)
-    .slice(0, 4)
+    .slice(0, 2)
 
   return (
     <section className="card side-card">

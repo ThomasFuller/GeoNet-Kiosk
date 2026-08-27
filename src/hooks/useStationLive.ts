@@ -12,7 +12,9 @@ import {
   type TildeSeries,
   type TildeSeriesRef,
   type WaveformTrace,
+  type ChartPeriod,
 } from '../api/geonet'
+import { periodMs } from '../components/PeriodPicker'
 
 export type StationLive = {
   loading: boolean
@@ -39,9 +41,11 @@ export function useStationLive(
   catalog: Record<string, TildeSeriesRef[]>,
   allCameras: CameraFeature[],
   allQuakes: QuakeFeature[],
+  period: ChartPeriod = '1d',
 ): StationLive {
   const [state, setState] = useState<StationLive>(EMPTY)
   const extras = useRef({ station, catalog, allCameras, allQuakes })
+  const lastCode = useRef<string | null>(null)
 
   useEffect(() => {
     extras.current = { station, catalog, allCameras, allQuakes }
@@ -50,24 +54,27 @@ export function useStationLive(
   useEffect(() => {
     const current = extras.current.station
     if (!current) {
+      lastCode.current = null
       setState(EMPTY)
       return
     }
 
+    const sameStation = lastCode.current === current.code
+    lastCode.current = current.code
     const cams = nearbyCameras(current, extras.current.allCameras)
-    const quakes = nearbyQuakes(current, extras.current.allQuakes)
+    const quakes = nearbyQuakes(current, extras.current.allQuakes, 200, 5, Date.now() - periodMs(period))
     const refs = (extras.current.catalog[current.code] ?? []).slice(0, 3)
     let cancelled = false
 
-    setState({
+    setState((prev) => ({
       loading: true,
-      waveform: null,
-      waveformError: null,
+      waveform: sameStation ? prev.waveform : null,
+      waveformError: sameStation ? prev.waveformError : null,
       tilde: refs.map((ref) => ({ ref, series: null, error: null })),
       cameras: cams,
       quakes,
-      sensorName: null,
-    })
+      sensorName: sameStation ? prev.sensorName : null,
+    }))
 
     const load = async () => {
       const wantWave =
@@ -92,7 +99,7 @@ export function useStationLive(
       const tildeTask = Promise.all(
         refs.map(async (ref) => {
           try {
-            const series = await fetchTildeSeries(ref)
+            const series = await fetchTildeSeries(ref, period)
             return { ref, series, error: series?.data?.length ? null : 'empty' }
           } catch {
             return { ref, series: null, error: 'fail' }
@@ -117,12 +124,12 @@ export function useStationLive(
     }
 
     void load()
-    const id = window.setInterval(() => void load(), 20_000)
+    const id = window.setInterval(() => void load(), period === '1d' ? 20_000 : 120_000)
     return () => {
       cancelled = true
       window.clearInterval(id)
     }
-  }, [station?.code])
+  }, [station?.code, period])
 
   return state
 }
