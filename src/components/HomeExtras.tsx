@@ -68,6 +68,14 @@ const categories = [
     desc: 'Alert levels, gas, cameras and tremor.',
   },
   {
+    to: '/sensors',
+    icon: brandIcon('sensor.svg'),
+    title: 'Sensor network',
+    titleMi: 'Te whatunga pūoko',
+    desc: 'Every station operating today.',
+    featured: true,
+  },
+  {
     to: '/tsunami',
     icon: brandIcon('tsunami.svg'),
     title: 'Tsunami',
@@ -81,20 +89,17 @@ const categories = [
     titleMi: 'Horo whenua',
     desc: 'How slopes are watched after a trigger.',
   },
-  {
-    to: '/sensors',
-    icon: brandIcon('layers.svg'),
-    title: 'Sensor network',
-    titleMi: 'Te whatunga pūoko',
-    desc: 'Every station operating today.',
-  },
 ] as const
 
 export function CategoryGrid({ teReo }: { teReo: boolean }) {
   return (
     <div className="category-grid">
       {categories.map((c) => (
-        <Link key={c.to} to={c.to} className="category-tile card">
+        <Link
+          key={c.to}
+          to={c.to}
+          className={`category-tile card${'featured' in c && c.featured ? ' featured' : ''}`}
+        >
           <img src={c.icon} alt="" />
           <h3>{teReo ? c.titleMi : c.title}</h3>
           <p className="muted">{c.desc}</p>

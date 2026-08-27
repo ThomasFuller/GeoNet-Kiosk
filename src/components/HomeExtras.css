@@ -101,6 +101,21 @@
   font-size: 20px;
 }
 
+.category-tile.featured {
+  background: color-mix(in srgb, var(--puia-20) 22%, var(--bg-elevated));
+  border: 2px solid var(--accent);
+  box-shadow: 0 8px 20px color-mix(in srgb, var(--puia-50) 18%, transparent);
+}
+
+.category-tile.featured h3 {
+  color: var(--puia-50);
+}
+
+.category-tile.featured img {
+  width: 32px;
+  height: 32px;
+}
+
 .side-card {
   padding: 12px 14px 10px;
   display: flex;
