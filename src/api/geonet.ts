@@ -196,36 +196,83 @@ export async function fetchGeomagLatest(
   return data[0] ?? null
 }
 
-export async function fetchActiveStations(): Promise<StationPoint[]> {
-  const today = new Date().toISOString().slice(0, 10)
-  const url = `${FDSN}/fdsnws/station/1/query?network=NZ&format=text&level=station&endafter=${today}`
-  let text = ''
-  try {
-    const res = await fetch(url, { cache: 'no-store' })
-    if (!res.ok) throw new Error(`FDSN station ${res.status}`)
-    text = await res.text()
-  } catch {
-    text = await fetch(bundled('stations.txt'), { cache: 'no-store' }).then((r) => {
-      if (!r.ok) throw new Error(`bundled stations ${r.status}`)
-      return r.text()
+const ACTIVE_SENSOR_TYPES = '1,2,3,4,5,6,7,8,9,11,12'
+
+type NetworkStationFeature = {
+  properties?: {
+    Code?: string
+    Name?: string
+    SensorType?: string
+  }
+  geometry?: { coordinates?: number[] }
+}
+
+function kindFromSensorType(type: string): StationKind | null {
+  switch (type) {
+    case 'Broadband seismometer':
+    case 'Short period seismometer':
+    case 'Strong motion sensor':
+      return 'seismic'
+    case 'Geomagnetic sensor':
+      return 'geomag'
+    case 'GNSS/GPS':
+      return 'gnss'
+    case 'DART bottom pressure recorder':
+      return 'dart'
+    case 'Coastal sea level gauge':
+      return 'coastal'
+    case 'Air pressure sensor':
+    case 'Environmental sensor':
+    case 'Lake level gauge':
+      return 'envirosensor'
+    case 'DOAS spectrometer':
+      return 'scandoas'
+    default:
+      return null
+  }
+}
+
+function stationsFromNetworkFeatures(features: NetworkStationFeature[]): StationPoint[] {
+  const map = new Map<string, StationPoint>()
+  for (const feature of features) {
+    const code = feature.properties?.Code
+    const kind = kindFromSensorType(feature.properties?.SensorType ?? '')
+    const coords = feature.geometry?.coordinates
+    if (!code || !kind || !coords || coords.length < 2) continue
+    const lon = Number(coords[0])
+    const lat = Number(coords[1])
+    if (!Number.isFinite(lat) || !Number.isFinite(lon)) continue
+    const existing = map.get(code)
+    if (existing) {
+      if (!existing.kinds.includes(kind)) existing.kinds.push(kind)
+      continue
+    }
+    map.set(code, {
+      code,
+      name: feature.properties?.Name || code,
+      lat,
+      lon,
+      elevation: 0,
+      kinds: [kind],
     })
   }
+  return [...map.values()]
+}
 
-  return text
-    .split('\n')
-    .filter((line) => line && !line.startsWith('#'))
-    .map((line): StationPoint => {
-      const parts = line.split('|')
-      return {
-        code: parts[1],
-        lat: Number(parts[2]),
-        lon: Number(parts[3]),
-        elevation: Number(parts[4]),
-        name: parts[5] || parts[1],
-        kinds: ['seismic'],
-      }
+export async function fetchActiveStations(): Promise<StationPoint[]> {
+  const today = new Date().toISOString().slice(0, 10)
+  const url = `${API}/network/station?sensorType=${ACTIVE_SENSOR_TYPES}&startDate=${today}&endDate=${today}`
+  try {
+    const data = await getJson<{ features?: NetworkStationFeature[] }>(url, {
+      headers: { Accept: 'application/vnd.geo+json;version=2' },
     })
-    .filter((s) => Number.isFinite(s.lat) && Number.isFinite(s.lon))
+    const stations = stationsFromNetworkFeatures(data.features ?? [])
+    if (!stations.length) throw new Error('empty network station list')
+    return stations
+  } catch {
+    const data = await getJson<{ features?: NetworkStationFeature[] }>(bundled('stations.json'))
+    return stationsFromNetworkFeatures(data.features ?? [])
+  }
 }
 
 function tildePeriod(domain: string): '6h' | '1d' | '7d' {
@@ -339,7 +386,6 @@ export function mergeStationsWithTilde(
   stations: StationPoint[],
   catalog: Record<string, TildeSeriesRef[]>,
 ): StationPoint[] {
-  const map = new Map(stations.map((s) => [s.code, { ...s, kinds: [...s.kinds] }]))
   const kindOf: Record<string, StationKind> = {
     geomag: 'geomag',
     gnss: 'gnss',
@@ -348,27 +394,16 @@ export function mergeStationsWithTilde(
     envirosensor: 'envirosensor',
     scandoas: 'scandoas',
   }
-  for (const [code, refs] of Object.entries(catalog)) {
-    const kinds = [...new Set(refs.map((r) => kindOf[r.domain]).filter(Boolean))] as StationKind[]
-    const existing = map.get(code)
-    if (existing) {
-      for (const k of kinds) {
-        if (!existing.kinds.includes(k)) existing.kinds.push(k)
-      }
-      continue
+  return stations.map((station) => {
+    const refs = catalog[station.code]
+    if (!refs?.length) return station
+    const kinds = [...station.kinds]
+    for (const ref of refs) {
+      const kind = kindOf[ref.domain]
+      if (kind && !kinds.includes(kind)) kinds.push(kind)
     }
-    const ref = refs.find((r) => Number.isFinite(r.lat) && Number.isFinite(r.lon)) ?? refs[0]
-    if (!Number.isFinite(ref.lat) || !Number.isFinite(ref.lon)) continue
-    map.set(code, {
-      code,
-      name: ref.locality || code,
-      lat: ref.lat as number,
-      lon: ref.lon as number,
-      elevation: 0,
-      kinds,
-    })
-  }
-  return [...map.values()]
+    return { ...station, kinds }
+  })
 }
 
 function tildeAggregation(method: string, period: ChartPeriod): string {
@@ -565,7 +600,7 @@ export function kindLabel(kind: StationKind): string {
     case 'coastal':
       return 'Sea gauge'
     case 'envirosensor':
-      return 'Volcano sensor'
+      return 'Environment'
     case 'scandoas':
       return 'Volcano gas'
   }

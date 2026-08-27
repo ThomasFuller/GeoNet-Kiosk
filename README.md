@@ -21,7 +21,7 @@ npm run kiosk
 
 Yes. The UI is a static Vite app with HashRouter, so it can live on GitHub Pages.
 
-GeoNet’s **quake, volcano, news and Tilde** APIs send `Access-Control-Allow-Origin: *`, so those stay live in the browser. **Camera metadata and FDSN station/waveform** services do not, so Pages cannot proxy them. The deploy workflow snapshots camera lists and stations into `public/data/` at build time. Camera JPEGs still load as images. Near-real-time ground wiggles (miniSEED) will be quiet on Pages unless you run `npm run kiosk` locally.
+GeoNet’s **quake, volcano and Tilde** APIs send `Access-Control-Allow-Origin: *`, so those stay live in the browser. **Camera metadata and FDSN waveforms** do not, so Pages cannot proxy them. The deploy workflow snapshots camera lists and the currently operating station inventory into `public/data/` at build time. Camera JPEGs still load as images. Near-real-time ground wiggles (miniSEED) will be quiet on Pages unless you run `npm run kiosk` locally.
 
 1. Push this repo to GitHub.
 2. Settings → Pages → **Source: GitHub Actions**.
@@ -38,8 +38,7 @@ GeoNet’s **quake, volcano, news and Tilde** APIs send `Access-Control-Allow-Or
 | Volcanic alert levels | `api.geonet.org.nz/volcano/val` |
 | Volcano cameras | `images.geonet.org.nz` |
 | Geomagnetic time series | `tilde.geonet.org.nz` (EYWM F total field) |
-| News | `api.geonet.org.nz/news/geonet` |
-| Sensor metadata | FDSN station service |
+| Currently operating sensors | `api.geonet.org.nz/network/station` (same inventory as the [sensor search map](https://www.geonet.org.nz/data/network/sensor/search)) |
 | SeedLink (waveforms) | `link.geonet.org.nz:18000` (binary protocol; documented in UI) |
 
 Locally, Vite and `server.mjs` proxy cameras and FDSN so waveforms work. On GitHub Pages those same feeds use public GeoNet URLs plus a build-time snapshot for CORS-blocked metadata.

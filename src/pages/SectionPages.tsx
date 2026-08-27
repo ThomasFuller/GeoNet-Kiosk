@@ -215,7 +215,7 @@ export function SensorsPage({ data }: { data: GeoNetBundle }) {
       <div className="sensor-hero">
         <PageHero
           title="Sensor playground"
-          blurb="Touch a glowing dot or a name in the list. Then pick 24 hours, 7 days or 30 days to stretch the live charts."
+          blurb="These are the sensors GeoNet is running right now. Touch a glowing dot or a name, then pick 24 hours, 7 days or 30 days."
           icon={brandIcon('layers.svg')}
         />
         <PeriodPicker value={period} onChange={setPeriod} />
@@ -263,7 +263,7 @@ export function SensorsPage({ data }: { data: GeoNetBundle }) {
             ))}
           </div>
           <p className="muted station-count">
-            {listed.length} sensors · tap a row
+            {listed.length} currently operating · tap a row
           </p>
           <ul className="station-list">
             {listed.map((s) => (
