@@ -1,5 +1,6 @@
 import { useEffect, useState, type ReactNode } from 'react'
 import { KIOSK_HEIGHT, KIOSK_WIDTH } from '../api/geonet'
+import { brandIcon } from '../brand'
 
 export function KioskStage({ children }: { children: ReactNode }) {
   const [transform, setTransform] = useState('scale(1)')
@@ -23,6 +24,11 @@ export function KioskStage({ children }: { children: ReactNode }) {
   return (
     <div className="kiosk-letterbox">
       <div className="kiosk-stage" style={{ transform }}>
+        <div
+          className="kiosk-pattern"
+          aria-hidden="true"
+          style={{ backgroundImage: `url("${brandIcon('pattern-altogether.svg')}")` }}
+        />
         {children}
       </div>
     </div>

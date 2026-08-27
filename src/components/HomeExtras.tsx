@@ -53,9 +53,6 @@ export function Hero({
         </div>
         {news && <p className="hero-news muted">{news.title.trim()}</p>}
       </div>
-      <div className="hero-dots" aria-hidden="true">
-        <img src={brandIcon('pattern-altogether.svg')} alt="" />
-      </div>
     </div>
   )
 }

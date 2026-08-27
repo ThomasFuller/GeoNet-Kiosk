@@ -6,7 +6,7 @@
   grid-template-rows: auto minmax(0, 1fr);
   gap: 12px;
   padding: 8px 4px 4px;
-  background: color-mix(in srgb, var(--bg) 94%, #fff);
+  background-color: color-mix(in srgb, var(--bg) 88%, #fff);
   background-image: var(--brand-pattern);
   background-repeat: repeat;
   background-size: 640px 611px;

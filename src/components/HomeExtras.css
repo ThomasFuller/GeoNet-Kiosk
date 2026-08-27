@@ -1,10 +1,6 @@
 .hero {
   position: relative;
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) 300px;
-  align-items: center;
-  gap: 8px 20px;
-  min-height: 148px;
+  min-height: 0;
 }
 
 .hero-copy h1 {
@@ -56,20 +52,6 @@
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-}
-
-.hero-dots {
-  height: 148px;
-  overflow: hidden;
-  pointer-events: none;
-  mask-image: linear-gradient(90deg, transparent, #000 12%);
-}
-
-.hero-dots img {
-  width: 300px;
-  height: 286px;
-  object-fit: cover;
-  object-position: 12% 8%;
 }
 
 .felt-banner {
@@ -240,7 +222,7 @@
   align-items: center;
   padding: 0 var(--page-pad);
   border-top: 1px solid var(--border);
-  background: color-mix(in srgb, var(--bg) 92%, #fff);
+  background: color-mix(in srgb, var(--bg) 78%, transparent);
   font-size: 14px;
 }
 
