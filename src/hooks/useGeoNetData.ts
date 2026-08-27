@@ -2,7 +2,6 @@ import { useCallback, useEffect, useMemo, useState } from 'react'
 import {
   fetchActiveStations,
   fetchCameras,
-  fetchFeltReportCount,
   fetchGeomagLatest,
   fetchQuakeStats,
   fetchQuakes,
@@ -21,7 +20,6 @@ import {
 export type GeoNetBundle = {
   quakes: QuakeFeature[]
   stats: QuakeStats | null
-  feltReports: number
   volcanoes: VolcanoFeature[]
   cameras: CameraFeature[]
   stations: StationPoint[]
@@ -38,7 +36,6 @@ const REFRESH_MS = 60_000
 export function useGeoNetData(): GeoNetBundle {
   const [quakes, setQuakes] = useState<QuakeFeature[]>([])
   const [stats, setStats] = useState<QuakeStats | null>(null)
-  const [feltReports, setFeltReports] = useState(0)
   const [volcanoes, setVolcanoes] = useState<VolcanoFeature[]>([])
   const [cameras, setCameras] = useState<CameraFeature[]>([])
   const [stations, setStations] = useState<StationPoint[]>([])
@@ -51,10 +48,9 @@ export function useGeoNetData(): GeoNetBundle {
   const load = useCallback(async () => {
     try {
       setError(null)
-      const [q, st, felt, v, c, s, g, tilde] = await Promise.all([
+      const [q, st, v, c, s, g, tilde] = await Promise.all([
         fetchQuakes(-1).catch(() => [] as QuakeFeature[]),
         fetchQuakeStats().catch(() => null),
-        fetchFeltReportCount().catch(() => 0),
         fetchVolcanoAlerts().catch(() => [] as VolcanoFeature[]),
         fetchCameras().catch(() => [] as CameraFeature[]),
         fetchActiveStations().catch(() => [] as StationPoint[]),
@@ -63,7 +59,6 @@ export function useGeoNetData(): GeoNetBundle {
       ])
       setQuakes(q)
       setStats(st)
-      setFeltReports(felt)
       setVolcanoes(v)
       setCameras(c)
       setTildeByStation(tilde)
@@ -90,7 +85,6 @@ export function useGeoNetData(): GeoNetBundle {
     () => ({
       quakes,
       stats,
-      feltReports,
       volcanoes,
       cameras,
       stations,
@@ -104,7 +98,6 @@ export function useGeoNetData(): GeoNetBundle {
     [
       quakes,
       stats,
-      feltReports,
       volcanoes,
       cameras,
       stations,

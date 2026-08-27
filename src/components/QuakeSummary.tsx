@@ -10,14 +10,13 @@ import { brandIcon } from '../brand'
 
 export function QuakeSummary({
   stats,
-  feltReports,
   latest,
 }: {
   stats: QuakeStats | null
-  feltReports: number
   latest?: QuakeFeature
 }) {
   const total = stats ? sumMagAtLeast(stats.days7, -1) : '—'
+  const m4 = stats ? sumMagAtLeast(stats.days7, 4) : '—'
   const m5 = stats ? sumMagAtLeast(stats.days7, 5) : '—'
 
   return (
@@ -33,12 +32,12 @@ export function QuakeSummary({
           <span>Earthquakes</span>
         </div>
         <div className="stat">
-          <strong>{m5}</strong>
-          <span>M5.0+</span>
+          <strong>{m4}</strong>
+          <span>M4.0+</span>
         </div>
         <div className="stat">
-          <strong>{feltReports}</strong>
-          <span>Felt · 60 min</span>
+          <strong>{m5}</strong>
+          <span>M5.0+</span>
         </div>
       </div>
       {latest && (

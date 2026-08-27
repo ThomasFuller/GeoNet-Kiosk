@@ -31,7 +31,7 @@ export function HomePage({
           <QuakeMap quakes={data.quakes} stations={data.stations} compact />
         </div>
         <aside className="home-side">
-          <QuakeSummary stats={data.stats} feltReports={data.feltReports} latest={latest} />
+          <QuakeSummary stats={data.stats} latest={latest} />
           <VolcanoAlerts volcanoes={data.volcanoes} />
           <LiveCamera cameras={data.cameras} bust={data.updatedAt} />
         </aside>

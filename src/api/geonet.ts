@@ -151,14 +151,6 @@ export async function fetchQuakeStats(): Promise<QuakeStats> {
   }
 }
 
-export async function fetchFeltReportCount(): Promise<number> {
-  const data = await getJson<{ features: Array<{ properties?: { count?: number } }> }>(
-    `${API}/intensity?type=reported`,
-    { headers: { Accept: 'application/vnd.geo+json;version=2' } },
-  )
-  return (data.features ?? []).reduce((n, f) => n + (f.properties?.count ?? 0), 0)
-}
-
 export async function fetchVolcanoAlerts(): Promise<VolcanoFeature[]> {
   const data = await getJson<{ features: VolcanoFeature[] }>(`${API}/volcano/val`, {
     headers: { Accept: 'application/vnd.geo+json;version=2' },

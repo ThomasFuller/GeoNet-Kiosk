@@ -34,7 +34,6 @@ GeoNet’s **quake, volcano and Tilde** APIs send `Access-Control-Allow-Origin: 
 |------|--------|
 | Recent earthquakes | `api.geonet.org.nz/quake` |
 | 7-day counts | `api.geonet.org.nz/quake/stats` |
-| Felt reports | `api.geonet.org.nz/intensity?type=reported` |
 | Volcanic alert levels | `api.geonet.org.nz/volcano/val` |
 | Volcano cameras | `images.geonet.org.nz` |
 | Geomagnetic time series | `tilde.geonet.org.nz` (EYWM F total field) |

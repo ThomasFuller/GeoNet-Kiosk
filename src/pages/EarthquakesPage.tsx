@@ -45,7 +45,6 @@ export function EarthquakesPage({ data }: { data: GeoNetBundle }) {
               { value: total, label: 'Last 7 days' },
               { value: month, label: 'Last 28 days' },
               { value: m4, label: 'M4.0+ this week' },
-              { value: data.feltReports, label: 'Felt · 60 min' },
             ]}
           />
         </>
