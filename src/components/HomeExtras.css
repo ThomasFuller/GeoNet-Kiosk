@@ -56,18 +56,6 @@
   color: var(--brand);
 }
 
-.hero-news {
-  max-width: 62ch;
-  margin: 0;
-  padding: 6px 12px;
-  font-size: 13px;
-  color: var(--ink-muted);
-  background: var(--bg-elevated);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
 .felt-banner {
   display: grid;
   grid-template-columns: auto 1fr auto;

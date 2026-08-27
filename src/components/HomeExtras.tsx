@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import { sumMagAtLeast, type NewsItem, type QuakeStats } from '../api/geonet'
+import { sumMagAtLeast, type QuakeStats } from '../api/geonet'
 import { brandIcon } from '../brand'
 import './HomeExtras.css'
 
@@ -25,13 +25,11 @@ export function Hero({
   stats,
   sensorCount,
   unrestCount,
-  news,
 }: {
   teReo: boolean
   stats: QuakeStats | null
   sensorCount: number
   unrestCount: number
-  news?: NewsItem
 }) {
   const t = teReo ? copy.mi : copy.en
   const quakes = stats ? sumMagAtLeast(stats.days7, -1) : '—'
@@ -53,7 +51,6 @@ export function Hero({
             <strong>{unrestCount}</strong> {unrestCount === 1 ? 'volcano' : 'volcanoes'} unrest
           </span>
         </div>
-        {news && <p className="hero-news card">{news.title.trim()}</p>}
       </div>
     </div>
   )

@@ -29,7 +29,6 @@ export function HomePage({
             stats={data.stats}
             sensorCount={data.stations.length}
             unrestCount={unrest}
-            news={data.news[0]}
           />
           <FeltItBanner teReo={teReo} onReport={onReport} />
           <QuakeMap quakes={data.quakes} stations={data.stations} compact />
