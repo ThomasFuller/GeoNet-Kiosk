@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom'
 import { sumMagAtLeast, type QuakeStats } from '../api/geonet'
+import { brandIcon } from '../brand'
 
 export function QuakeSummary({
   stats,
@@ -14,7 +15,7 @@ export function QuakeSummary({
   return (
     <section className="card side-card">
       <h3 className="section-title">
-        <img src="/brand/icons/earthquake.svg" alt="" />
+        <img src={brandIcon('earthquake.svg')} alt="" />
         Earthquake summary
       </h3>
       <p className="muted side-meta">Last 7 days · GeoNet catalogue stats</p>
@@ -33,7 +34,7 @@ export function QuakeSummary({
         </div>
       </div>
       <Link to="/earthquakes" className="link-arrow">
-        View all earthquakes <img src="/brand/icons/right-arrow.svg" alt="" />
+        View all earthquakes <img src={brandIcon('right-arrow.svg')} alt="" />
       </Link>
     </section>
   )

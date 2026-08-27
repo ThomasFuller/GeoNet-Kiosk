@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom'
 import { volcanoDisplayName, type VolcanoFeature } from '../api/geonet'
+import { brandIcon } from '../brand'
 
 function valClass(level: number) {
   return `val-badge val-${Math.min(5, Math.max(0, level))}`
@@ -14,7 +15,7 @@ export function VolcanoAlerts({ volcanoes }: { volcanoes: VolcanoFeature[] }) {
   return (
     <section className="card side-card">
       <h3 className="section-title">
-        <img src="/brand/icons/volcano.svg" alt="" />
+        <img src={brandIcon('volcano.svg')} alt="" />
         Volcanic alert levels
       </h3>
       <ul className="volcano-list">
@@ -29,7 +30,7 @@ export function VolcanoAlerts({ volcanoes }: { volcanoes: VolcanoFeature[] }) {
         ))}
       </ul>
       <Link to="/volcanoes" className="link-arrow">
-        View all volcanoes <img src="/brand/icons/right-arrow.svg" alt="" />
+        View all volcanoes <img src={brandIcon('right-arrow.svg')} alt="" />
       </Link>
     </section>
   )

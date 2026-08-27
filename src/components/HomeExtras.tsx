@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom'
+import { brandIcon } from '../brand'
 import './HomeExtras.css'
 
 const copy = {
@@ -33,7 +34,7 @@ export function FeltItBanner({ teReo, onReport }: { teReo: boolean; onReport: ()
   return (
     <div className="felt-banner card">
       <div className="felt-icon" aria-hidden="true">
-        <img src="/brand/icons/earthquake.svg" alt="" />
+        <img src={brandIcon('earthquake.svg')} alt="" />
       </div>
       <p>{t.felt}</p>
       <button type="button" className="touch-btn primary" onClick={onReport}>
@@ -46,35 +47,35 @@ export function FeltItBanner({ teReo, onReport }: { teReo: boolean; onReport: ()
 const categories = [
   {
     to: '/earthquakes',
-    icon: '/brand/icons/earthquake.svg',
+    icon: brandIcon('earthquake.svg'),
     title: 'Earthquakes',
     titleMi: 'Rū whenua',
     desc: 'Recent shakes and where they were felt.',
   },
   {
     to: '/volcanoes',
-    icon: '/brand/icons/volcano.svg',
+    icon: brandIcon('volcano.svg'),
     title: 'Volcanoes',
     titleMi: 'Ngā puia',
     desc: 'Alert levels and unrest around Aotearoa.',
   },
   {
     to: '/tsunami',
-    icon: '/brand/icons/tsunami.svg',
+    icon: brandIcon('tsunami.svg'),
     title: 'Tsunami',
     titleMi: 'Tsunami',
     desc: 'How GeoNet watches the ocean.',
   },
   {
     to: '/sensors',
-    icon: '/brand/icons/layers.svg',
+    icon: brandIcon('layers.svg'),
     title: 'Sensor network',
     titleMi: 'Te whatunga pūoko',
     desc: 'Seismic, geomagnetic and cameras.',
   },
   {
     to: '/about',
-    icon: '/brand/icons/info.svg',
+    icon: brandIcon('info.svg'),
     title: 'How GeoNet works',
     titleMi: 'Pēhea te mahi a GeoNet',
     desc: 'Science for kids and curious explorers.',
@@ -116,7 +117,7 @@ export function StatusBar({
   return (
     <footer className="status-bar">
       <div className="status-left">
-        <img src="/brand/icons/earthquake.svg" alt="" />
+        <img src={brandIcon('earthquake.svg')} alt="" />
         <span>Monitoring 24/7 to keep Aotearoa informed and safe.</span>
       </div>
       <div className="status-right">

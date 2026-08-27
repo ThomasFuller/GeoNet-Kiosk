@@ -46,6 +46,7 @@
   --page-pad: 32px;
   --kiosk-w: 1920px;
   --kiosk-h: 1080px;
+  --brand-pattern: none;
 }
 
 *,
@@ -116,7 +117,7 @@ p {
   overflow: hidden;
   color: var(--ink);
   background-color: var(--bg);
-  background-image: url("/brand/icons/pattern-altogether.svg");
+  background-image: var(--brand-pattern);
   background-repeat: repeat;
   background-size: 640px 611px;
   font-family: var(--font-body);

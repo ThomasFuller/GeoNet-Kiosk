@@ -11,6 +11,7 @@ import {
   type QuakeFeature,
   type StationPoint,
 } from '../api/geonet'
+import { brandIcon } from '../brand'
 import './QuakeMap.css'
 
 const NZ_CENTER: [number, number] = [-41.15, 173.6]
@@ -230,7 +231,7 @@ export function QuakeMap({
         )}
         {showFullLink && (
           <Link to="/map" className="link-arrow map-full">
-            View full map <img src="/brand/icons/right-arrow.svg" alt="" />
+            View full map <img src={brandIcon('right-arrow.svg')} alt="" />
           </Link>
         )}
       </div>

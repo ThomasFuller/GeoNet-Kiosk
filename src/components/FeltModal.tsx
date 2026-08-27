@@ -1,4 +1,5 @@
 import { FELT_IT_URL } from '../api/geonet'
+import { brandIcon } from '../brand'
 
 export function FeltModal({ open, onClose }: { open: boolean; onClose: () => void }) {
   if (!open) return null
@@ -6,7 +7,7 @@ export function FeltModal({ open, onClose }: { open: boolean; onClose: () => voi
     <div className="felt-modal" role="dialog" aria-modal="true" aria-labelledby="felt-title">
       <button type="button" className="felt-modal-scrim" aria-label="Close" onClick={onClose} />
       <div className="felt-modal-card card">
-        <img src="/brand/icons/earthquake.svg" alt="" />
+        <img src={brandIcon('earthquake.svg')} alt="" />
         <h2 id="felt-title">Felt It?</h2>
         <p>
           If the ground shook, GeoNet scientists want to know what you felt. That helps them map

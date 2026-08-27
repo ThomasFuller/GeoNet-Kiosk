@@ -1,4 +1,5 @@
 import { NavLink } from 'react-router-dom'
+import { brandIcon } from '../brand'
 import './Header.css'
 
 const nav = [
@@ -37,16 +38,16 @@ function NavIcon({ name }: { name: (typeof nav)[number]['icon'] }) {
     )
   }
   if (name === 'alert') {
-    return <img src="/brand/icons/alert.svg" alt="" />
+    return <img src={brandIcon('alert.svg')} alt="" />
   }
-  return <img src="/brand/icons/info.svg" alt="" />
+  return <img src={brandIcon('info.svg')} alt="" />
 }
 
 export function Header({ teReo, onToggleTeReo }: { teReo: boolean; onToggleTeReo: () => void }) {
   return (
     <header className="kiosk-header">
       <NavLink to="/" className="brand" aria-label="GeoNet home">
-        <img src="/brand/icons/geonet.svg" alt="GeoNet" className="brand-logo" />
+        <img src={brandIcon('geonet.svg')} alt="GeoNet" className="brand-logo" />
         <span className="brand-sub">Aotearoa New Zealand</span>
       </NavLink>
 

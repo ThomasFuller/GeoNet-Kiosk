@@ -13,6 +13,7 @@ import {
   type StationKind,
   type StationPoint,
 } from '../api/geonet'
+import { brandIcon } from '../brand'
 import { QuakeMap } from '../components/QuakeMap'
 import { StationSheet } from '../components/StationSheet'
 import type { GeoNetBundle } from '../hooks/useGeoNetData'
@@ -39,7 +40,7 @@ export function MapPage({ data }: { data: GeoNetBundle }) {
       <PageHero
         title="Live hazard map"
         blurb="Touch a circle to learn about a recent earthquake. Hollow rings are GeoNet sensors listening across Aotearoa."
-        icon="/brand/icons/layers.svg"
+        icon={brandIcon('layers.svg')}
       />
       <div className="map-page-frame card">
         <QuakeMap quakes={data.quakes} stations={data.stations} showFullLink={false} />
@@ -60,7 +61,7 @@ export function EarthquakesPage({ data }: { data: GeoNetBundle }) {
       <PageHero
         title="Earthquakes"
         blurb="The map shows the latest events in the GeoNet catalogue. Bigger, darker circles mean stronger magnitudes."
-        icon="/brand/icons/earthquake.svg"
+        icon={brandIcon('earthquake.svg')}
       />
       <div className="split-layout">
         <div className="map-page-frame card">
@@ -113,7 +114,7 @@ export function VolcanoesPage({ data }: { data: GeoNetBundle }) {
       <PageHero
         title="Volcanoes"
         blurb="Volcanic Alert Levels tell us how restless a volcano is — from quiet (0) to eruption hazards (5). Colours match the GeoNet scale."
-        icon="/brand/icons/volcano.svg"
+        icon={brandIcon('volcano.svg')}
       />
       <div className="tile-board">
         {sorted.map((v) => (
@@ -137,7 +138,7 @@ export function CamerasPage({ data }: { data: GeoNetBundle }) {
       <PageHero
         title="Volcano cameras"
         blurb="These cameras refresh about every 10 minutes so scientists (and you!) can watch steam, snow and crater lakes."
-        icon="/brand/icons/volcano.svg"
+        icon={brandIcon('volcano.svg')}
       />
       <div className="camera-grid">
         {data.cameras.slice(0, 12).map((cam, i) => (
@@ -212,7 +213,7 @@ export function SensorsPage({ data }: { data: GeoNetBundle }) {
       <PageHero
         title="Sensor playground"
         blurb="Touch a glowing dot or a name in the list. We’ll open a big live chart — ground wiggles, magnets, GPS and the sea."
-        icon="/brand/icons/layers.svg"
+        icon={brandIcon('layers.svg')}
       />
 
       <div className="sensor-explore">
@@ -308,7 +309,7 @@ export function TsunamiPage() {
       <PageHero
         title="Tsunami watch"
         blurb="If a big undersea earthquake happens, GeoNet and emergency partners check gauges and DART buoys for unusual sea-level changes."
-        icon="/brand/icons/tsunami.svg"
+        icon={brandIcon('tsunami.svg')}
       />
       <div className="card kids-panel">
         <h3>Kid-friendly facts</h3>
@@ -335,7 +336,7 @@ export function AlertsPage({ data }: { data: GeoNetBundle }) {
       <PageHero
         title="Alerts & unrest"
         blurb="Volcanoes above alert level 0, plus the larger recent earthquakes in the live catalogue."
-        icon="/brand/icons/alert.svg"
+        icon={brandIcon('alert.svg')}
       />
       <div className="split-layout">
         <section className="card list-panel">
@@ -376,7 +377,7 @@ export function AboutPage({ data, teReo }: { data: GeoNetBundle; teReo: boolean 
       <PageHero
         title={teReo ? 'Mō GeoNet' : 'How GeoNet works'}
         blurb="GeoNet is Aotearoa New Zealand’s geological hazard monitoring system — built for science, safety and curiosity."
-        icon="/brand/icons/info.svg"
+        icon={brandIcon('info.svg')}
       />
       <div className="about-grid">
         <article className="card kids-panel">

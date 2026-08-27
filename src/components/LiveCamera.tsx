@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom'
 import { cameraImageUrl, type CameraFeature } from '../api/geonet'
+import { brandIcon } from '../brand'
 
 export function LiveCamera({ cameras, bust }: { cameras: CameraFeature[]; bust: number }) {
   const cam =
@@ -38,7 +39,7 @@ export function LiveCamera({ cameras, bust }: { cameras: CameraFeature[]; bust: 
         <p className="muted">{cam.properties['latest-timestamp']}</p>
       </div>
       <Link to="/cameras" className="link-arrow">
-        View all cameras <img src="/brand/icons/right-arrow.svg" alt="" />
+        View all cameras <img src={brandIcon('right-arrow.svg')} alt="" />
       </Link>
     </section>
   )
