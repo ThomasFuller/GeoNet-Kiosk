@@ -55,7 +55,7 @@ export default function App() {
     <KioskStage>
       <div className="app-shell">
         <Header teReo={teReo} onToggleTeReo={() => setTeReo((v) => !v)} />
-        <main className={`kiosk-scroll${isHome ? '' : ' allow-scroll'}`}>
+        <main className="kiosk-scroll">
           {data.error && (
             <div className="error-state card">
               Couldn’t refresh some GeoNet feeds: {data.error}

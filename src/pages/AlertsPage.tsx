@@ -1,6 +1,6 @@
 import { volcanoDisplayName } from '../api/geonet'
 import { brandIcon } from '../brand'
-import { Note, PageHero, QuakeRow, StatChips } from '../components/science/ThemeKit'
+import { Note, PageHero, QuakeRow, StatChips, ThemeFrame } from '../components/science/ThemeKit'
 import type { GeoNetBundle } from '../hooks/useGeoNetData'
 import './Pages.css'
 
@@ -13,24 +13,26 @@ export function AlertsPage({ data }: { data: GeoNetBundle }) {
   const coastal = data.stations.filter((s) => s.kinds.includes('coastal')).length
 
   return (
-    <div className="theme-page">
-      <div className="theme-head">
-        <PageHero
-          title="Today’s picture"
-          blurb="A snapshot of unrest and larger shakes from the live feeds — plus how many ocean sensors are on duty. This is a science dashboard, not an alerting product."
-          icon={brandIcon('alert.svg')}
-        />
-        <StatChips
-          items={[
-            { value: active.length, label: 'Volcanoes in unrest' },
-            { value: big.length, label: 'M4+ in catalogue' },
-            { value: dart, label: 'DART buoys' },
-            { value: coastal, label: 'Sea gauges' },
-          ]}
-        />
-      </div>
-
-      <div className="split-layout theme-split">
+    <ThemeFrame
+      even
+      head={
+        <>
+          <PageHero
+            title="Today’s picture"
+            blurb="Unrest and larger shakes from the live feeds, plus ocean sensors on duty. A science dashboard, not an alerting product."
+            icon={brandIcon('alert.svg')}
+          />
+          <StatChips
+            items={[
+              { value: active.length, label: 'Volcanoes in unrest' },
+              { value: big.length, label: 'M4+ in catalogue' },
+              { value: dart, label: 'DART buoys' },
+              { value: coastal, label: 'Sea gauges' },
+            ]}
+          />
+        </>
+      }
+      main={
         <section className="card list-panel">
           <h3>Volcanoes with unrest</h3>
           {active.length === 0 ? (
@@ -49,21 +51,24 @@ export function AlertsPage({ data }: { data: GeoNetBundle }) {
             </ul>
           )}
         </section>
-        <section className="card list-panel">
-          <h3>Larger quakes (M4+)</h3>
-          <ul className="quake-list">
-            {big.slice(0, 10).map((q) => (
-              <QuakeRow key={q.properties.publicID} quake={q} />
-            ))}
-            {big.length === 0 && <p className="muted">No M4+ events in the current catalogue window.</p>}
-          </ul>
-        </section>
-      </div>
-
-      <Note>
-        Civil Defence / NEMA issue official warnings. A volcano at level 1 or a distant M4 is information for curiosity
-        and science, not an instruction to act.
-      </Note>
-    </div>
+      }
+      aside={
+        <>
+          <section className="card list-panel">
+            <h3>Larger quakes (M4+)</h3>
+            <ul className="quake-list">
+              {big.slice(0, 10).map((q) => (
+                <QuakeRow key={q.properties.publicID} quake={q} />
+              ))}
+              {big.length === 0 && <p className="muted">No M4+ events in the current catalogue window.</p>}
+            </ul>
+          </section>
+          <Note>
+            Civil Defence / NEMA issue official warnings. A volcano at level 1 or a distant M4 is information, not an
+            instruction to act.
+          </Note>
+        </>
+      }
+    />
   )
 }

@@ -139,14 +139,17 @@ p {
 }
 
 .kiosk-scroll {
+  position: relative;
   overflow: hidden;
-  padding: 16px var(--page-pad) 12px;
+  padding: 12px var(--page-pad) 10px;
   min-height: 0;
+  height: 100%;
 }
 
-.kiosk-scroll.allow-scroll {
-  overflow: auto;
-  overscroll-behavior: contain;
+.kiosk-scroll > .page,
+.kiosk-scroll > .theme-page {
+  height: 100%;
+  min-height: 0;
 }
 
 .page {

@@ -52,11 +52,11 @@ export function useGeoNetData(): GeoNetBundle {
     try {
       setError(null)
       const [q, st, felt, v, c, s, g, tilde] = await Promise.all([
-        fetchQuakes(-1),
+        fetchQuakes(-1).catch(() => [] as QuakeFeature[]),
         fetchQuakeStats().catch(() => null),
         fetchFeltReportCount().catch(() => 0),
-        fetchVolcanoAlerts(),
-        fetchCameras(),
+        fetchVolcanoAlerts().catch(() => [] as VolcanoFeature[]),
+        fetchCameras().catch(() => [] as CameraFeature[]),
         fetchActiveStations().catch(() => [] as StationPoint[]),
         fetchGeomagLatest('EYWM', '1d').catch(() => null),
         fetchTildeCatalog().catch(() => ({} as Record<string, TildeSeriesRef[]>)),
@@ -70,6 +70,9 @@ export function useGeoNetData(): GeoNetBundle {
       setStations(mergeStationsWithTilde(s, tilde))
       setGeomag(g)
       setUpdatedAt(Date.now())
+      if (!q.length && !v.length && !s.length) {
+        setError('Couldn’t reach GeoNet feeds. Retry on this kiosk.')
+      }
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to load GeoNet data')
     } finally {

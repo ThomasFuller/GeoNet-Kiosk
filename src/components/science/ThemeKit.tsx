@@ -26,6 +26,29 @@ export function PageHero({
   )
 }
 
+export function ThemeFrame({
+  head,
+  main,
+  aside,
+  even,
+}: {
+  head: ReactNode
+  main: ReactNode
+  aside?: ReactNode
+  even?: boolean
+}) {
+  const fillClass = even ? 'theme-fill even' : aside ? 'theme-fill' : 'theme-fill solo'
+  return (
+    <div className="theme-page">
+      <div className="theme-head">{head}</div>
+      <div className={fillClass}>
+        <div className="theme-main">{main}</div>
+        {aside ? <aside className={even ? 'theme-main' : 'theme-aside'}>{aside}</aside> : null}
+      </div>
+    </div>
+  )
+}
+
 export function StatChips({
   items,
 }: {
@@ -101,7 +124,7 @@ export function Scale({
     <section className="card science-band">
       <h2>{title}</h2>
       {intro && <p className="muted science-intro">{intro}</p>}
-      <div className="science-scale" style={{ gridTemplateColumns: `repeat(${items.length}, minmax(0, 1fr))` }}>
+      <div className="science-scale">
         {items.map((item) => (
           <div key={item.mark} className="scale-cell">
             <span

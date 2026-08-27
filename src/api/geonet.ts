@@ -154,6 +154,7 @@ export async function fetchQuakeStats(): Promise<QuakeStats> {
 export async function fetchFeltReportCount(): Promise<number> {
   const data = await getJson<{ features: Array<{ properties?: { count?: number } }> }>(
     `${API}/intensity?type=reported`,
+    { headers: { Accept: 'application/vnd.geo+json;version=2' } },
   )
   return (data.features ?? []).reduce((n, f) => n + (f.properties?.count ?? 0), 0)
 }
@@ -239,7 +240,7 @@ function stationsFromNetworkFeatures(features: NetworkStationFeature[]): Station
     const kind = kindFromSensorType(feature.properties?.SensorType ?? '')
     const coords = feature.geometry?.coordinates
     if (!code || !kind || !coords || coords.length < 2) continue
-    const lon = Number(coords[0])
+    const lon = mapLongitude(Number(coords[0]))
     const lat = Number(coords[1])
     if (!Number.isFinite(lat) || !Number.isFinite(lon)) continue
     const existing = map.get(code)
@@ -535,6 +536,10 @@ export async function fetchWaveform(code: string, channel: ChannelInfo): Promise
     displayUnit,
     updatedMs: slim.times[slim.times.length - 1] ?? Date.now(),
   }
+}
+
+export function mapLongitude(lon: number): number {
+  return lon < 0 ? lon + 360 : lon
 }
 
 export function cameraLatLon(cam: CameraFeature): [number, number] | null {

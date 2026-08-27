@@ -7,6 +7,7 @@ import {
   formatRelativeTime,
   magnitudeColor,
   magnitudeRadius,
+  mapLongitude,
   primaryKind,
   type QuakeFeature,
   type StationPoint,
@@ -16,8 +17,8 @@ import './QuakeMap.css'
 
 const NZ_CENTER: [number, number] = [-41.15, 173.6]
 const NZ_BOUNDS: L.LatLngBoundsExpression = [
-  [-47.6, 166.0],
-  [-34.0, 179.2],
+  [-48.2, 165.2],
+  [-28.8, 185.2],
 ]
 
 function FitNZ() {
@@ -51,7 +52,7 @@ function FocusStation({ station }: { station: StationPoint | null }) {
   const map = useMap()
   useEffect(() => {
     if (!station) return
-    map.flyTo([station.lat, station.lon], 8, { duration: 0.55 })
+    map.flyTo([station.lat, mapLongitude(station.lon)], 8, { duration: 0.55 })
   }, [map, station])
   return null
 }
@@ -117,8 +118,8 @@ export function QuakeMap({
         minZoom={5}
         maxZoom={12}
         maxBounds={[
-          [-49.5, 160],
-          [-32.5, 185],
+          [-52, 158],
+          [-25, 192],
         ]}
         maxBoundsViscosity={0.85}
         scrollWheelZoom
@@ -143,7 +144,7 @@ export function QuakeMap({
             return (
               <CircleMarker
                 key={s.code}
-                center={[s.lat, s.lon]}
+                center={[s.lat, mapLongitude(s.lon)]}
                 radius={selected ? 18 : 12}
                 pathOptions={{
                   color: selected ? '#e83b00' : color,
@@ -158,7 +159,7 @@ export function QuakeMap({
             )
           }
           return (
-            <Marker key={s.code} position={[s.lat, s.lon]} icon={stationIcon}>
+            <Marker key={s.code} position={[s.lat, mapLongitude(s.lon)]} icon={stationIcon}>
               <Popup>
                 <strong>{s.code}</strong>
                 <div>{s.name}</div>
@@ -173,7 +174,7 @@ export function QuakeMap({
           return (
             <CircleMarker
               key={q.properties.publicID}
-              center={[lat, lon]}
+              center={[lat, mapLongitude(lon)]}
               radius={magnitudeRadius(m)}
               pathOptions={{
                 color: '#fff',

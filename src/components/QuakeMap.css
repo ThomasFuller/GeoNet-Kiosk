@@ -26,8 +26,7 @@
   right: 14px;
   bottom: 14px;
   z-index: 500;
-  background: color-mix(in srgb, var(--bg-elevated) 94%, transparent);
-  backdrop-filter: blur(6px);
+  background: var(--bg-elevated);
   border: 1px solid var(--border);
   border-radius: var(--radius);
   padding: 12px 14px;

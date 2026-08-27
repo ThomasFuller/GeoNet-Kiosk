@@ -8,23 +8,27 @@ import {
 import { brandIcon } from '../brand'
 import { PeriodPicker, type ChartPeriod } from '../components/PeriodPicker'
 import { QuakeMap } from '../components/QuakeMap'
-import { PageHero } from '../components/science/ThemeKit'
+import { PageHero, ThemeFrame } from '../components/science/ThemeKit'
 import { StationSheet } from '../components/StationSheet'
 import type { GeoNetBundle } from '../hooks/useGeoNetData'
 import './Pages.css'
 
 export function MapPage({ data }: { data: GeoNetBundle }) {
   return (
-    <div className="theme-page">
-      <PageHero
-        title="Live hazard map"
-        blurb="Filled circles are recent earthquakes — bigger and darker means a larger magnitude. Hollow rings are currently operating GeoNet sensors. Touch a quake for location, depth and time."
-        icon={brandIcon('layers.svg')}
-      />
-      <div className="map-page-frame card theme-map-tall">
-        <QuakeMap quakes={data.quakes} stations={data.stations} showFullLink={false} />
-      </div>
-    </div>
+    <ThemeFrame
+      head={
+        <PageHero
+          title="Live hazard map"
+          blurb="Filled circles are recent earthquakes — bigger and darker means a larger magnitude. Hollow rings are currently operating GeoNet sensors."
+          icon={brandIcon('layers.svg')}
+        />
+      }
+      main={
+        <div className="map-page-frame card">
+          <QuakeMap quakes={data.quakes} stations={data.stations} showFullLink={false} />
+        </div>
+      }
+    />
   )
 }
 

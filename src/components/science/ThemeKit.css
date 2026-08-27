@@ -1,17 +1,19 @@
 .theme-page {
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
-  min-height: 100%;
-  height: auto;
-  padding-bottom: 8px;
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr);
+  gap: 10px;
+  height: 100%;
+  min-height: 0;
+  overflow: hidden;
 }
 
 .theme-head {
   display: flex;
-  align-items: flex-end;
+  align-items: stretch;
   justify-content: space-between;
-  gap: 24px;
+  gap: 12px;
+  min-height: 0;
+  flex-shrink: 0;
 }
 
 .theme-head .page-hero {
@@ -19,12 +21,54 @@
   max-width: none;
 }
 
-.theme-stats {
-  min-width: 560px;
-  flex-shrink: 0;
-  padding: 10px;
-  background: var(--bg-elevated);
+.theme-fill {
+  display: grid;
+  grid-template-columns: minmax(0, 1.25fr) minmax(380px, 0.85fr);
+  gap: 12px;
+  min-height: 0;
+  height: 100%;
+  overflow: hidden;
+}
+
+.theme-fill.solo {
+  grid-template-columns: 1fr;
+}
+
+.theme-fill.even {
+  grid-template-columns: 1fr 1fr;
+}
+
+.theme-main,
+.theme-aside {
+  min-height: 0;
+  height: 100%;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
   gap: 10px;
+}
+
+.theme-aside {
+  overflow: auto;
+}
+
+.theme-main .map-page-frame,
+.theme-main .tile-board,
+.theme-main .camera-grid,
+.theme-fill.solo .map-page-frame {
+  flex: 1 1 0;
+  min-height: 0;
+  height: auto;
+}
+
+.theme-stats {
+  min-width: 480px;
+  max-width: 560px;
+  flex-shrink: 0;
+  padding: 8px;
+  background: var(--bg-elevated);
+  gap: 8px;
+  align-self: stretch;
 }
 
 .theme-stats.cols-2 {
@@ -40,24 +84,17 @@
 }
 
 .theme-live {
-  display: grid;
-  grid-template-columns: 1.25fr 0.85fr;
-  gap: 16px;
-  min-height: 500px;
-  height: 500px;
-}
-
-.theme-live.solo {
-  grid-template-columns: 1fr;
+  display: contents;
 }
 
 .science-band {
-  padding: 18px 20px 16px;
+  padding: 12px 14px 12px;
+  flex: 0 0 auto;
 }
 
 .science-band h2 {
-  font-size: 24px;
-  margin-bottom: 12px;
+  font-size: 20px;
+  margin-bottom: 8px;
 }
 
 .science-intro {
@@ -71,13 +108,15 @@
   margin: 0;
   padding: 0;
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 14px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
 }
 
 .science-steps li {
   position: relative;
-  padding: 4px 8px 0 0;
+  padding: 10px 12px;
+  background: var(--bg-card);
+  border-radius: var(--radius);
 }
 
 .step-n {
@@ -120,6 +159,7 @@
 .science-scale {
   display: grid;
   gap: 8px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
 }
 
 .scale-cell {
@@ -129,7 +169,7 @@
   display: flex;
   flex-direction: column;
   gap: 6px;
-  min-height: 148px;
+  min-height: 0;
 }
 
 .scale-swatch {
@@ -236,6 +276,33 @@
 .hazard-link h3 {
   font-size: 20px;
   font-weight: 500;
+}
+
+.theme-main > .list-panel,
+.theme-aside > .list-panel {
+  flex: 1 1 0;
+  min-height: 140px;
+}
+
+.pair-block {
+  padding: 14px 16px;
+  flex: 0 0 auto;
+}
+
+.pair-block h2 {
+  font-size: 20px;
+  margin-bottom: 6px;
+}
+
+.about-hazards {
+  height: 100%;
+  min-height: 0;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+}
+
+.about-hazards .hazard-link {
+  min-height: 0;
 }
 
 .camera-groups {

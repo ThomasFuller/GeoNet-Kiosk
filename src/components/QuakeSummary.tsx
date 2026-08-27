@@ -38,7 +38,7 @@ export function QuakeSummary({
         </div>
         <div className="stat">
           <strong>{feltReports}</strong>
-          <span>Felt reports</span>
+          <span>Felt · 60 min</span>
         </div>
       </div>
       {latest && (
