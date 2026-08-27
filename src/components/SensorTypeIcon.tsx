@@ -24,6 +24,20 @@ export const SENSOR_TYPE_STYLE: Record<SensorTypeName, Style> = {
   'Strong motion sensor': { shape: 'square', fill: '#006600' },
 }
 
+export const SENSOR_TYPE_BLURB: Record<SensorTypeName, string> = {
+  'Air pressure sensor': 'Weight of the air',
+  'Broadband seismometer': 'Shakes of every size',
+  'Coastal sea level gauge': 'Sea height at the shore',
+  'DART bottom pressure recorder': 'Tsunami sensor in deep ocean',
+  'DOAS spectrometer': 'Volcanic gas on the wind',
+  'Environmental sensor': 'Heat, gas or ground at a volcano',
+  'Geomagnetic sensor': 'Earth’s magnetic field',
+  'GNSS/GPS': 'Whether the land is creeping',
+  'Lake level gauge': 'Height of a volcanic lake',
+  'Short period seismometer': 'Nearby, sharp shakes',
+  'Strong motion sensor': 'Big shakes near people',
+}
+
 export function sensorTypeSvg(type: SensorTypeName, size = 22): string {
   const { shape, fill, stroke = '#000' } = SENSOR_TYPE_STYLE[type]
   const open = `xmlns="http://www.w3.org/2000/svg" width="${size}" height="${size}" fill="${fill}" stroke="${stroke}" stroke-width="1" stroke-linejoin="round"`
