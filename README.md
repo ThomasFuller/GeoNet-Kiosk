@@ -48,4 +48,3 @@ Locally, Vite and `server.mjs` proxy cameras and FDSN so waveforms work. On GitH
 - Not an official emergency alerting product — follow Civil Defence / NEMA guidance.
 - Idle timeout returns visitors to Home after ~3 minutes.
 - Māori toggle switches key home labels to te reo.
-- Felt It? stays on-kiosk (does not jump to an external browser).

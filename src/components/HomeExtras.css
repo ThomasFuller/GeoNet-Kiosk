@@ -56,34 +56,6 @@
   color: var(--brand);
 }
 
-.felt-banner {
-  display: grid;
-  grid-template-columns: auto 1fr auto;
-  align-items: center;
-  gap: 16px;
-  padding: 8px 14px 8px 12px;
-  background: var(--bg-elevated);
-  min-height: 64px;
-}
-
-.felt-icon {
-  width: 48px;
-  height: 48px;
-  border-radius: 50%;
-  background: color-mix(in srgb, var(--puia-100) 6%, white);
-  display: grid;
-  place-items: center;
-}
-
-.felt-icon img {
-  width: 26px;
-  height: 26px;
-}
-
-.felt-banner p {
-  font-size: 16px;
-}
-
 .category-grid {
   display: grid;
   grid-template-columns: repeat(5, minmax(0, 1fr));

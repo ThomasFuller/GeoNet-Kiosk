@@ -3,7 +3,6 @@ import { Navigate, Route, Routes, useLocation, useNavigate } from 'react-router-
 import { Header } from './components/Header'
 import { StatusBar } from './components/HomeExtras'
 import { KioskStage } from './components/KioskStage'
-import { FeltModal } from './components/FeltModal'
 import { useGeoNetData } from './hooks/useGeoNetData'
 import { HomePage } from './pages/HomePage'
 import { AboutPage } from './pages/AboutPage'
@@ -21,7 +20,6 @@ const IDLE_HOME_MS = 3 * 60_000
 export default function App() {
   const data = useGeoNetData()
   const [teReo, setTeReo] = useState(false)
-  const [feltOpen, setFeltOpen] = useState(false)
   const [clock, setClock] = useState(formatClock())
   const location = useLocation()
   const navigate = useNavigate()
@@ -36,9 +34,8 @@ export default function App() {
     let timer = 0
     const bump = () => {
       window.clearTimeout(timer)
-      if (isHome && !feltOpen) return
+      if (isHome) return
       timer = window.setTimeout(() => {
-        setFeltOpen(false)
         navigate('/')
       }, IDLE_HOME_MS)
     }
@@ -49,7 +46,7 @@ export default function App() {
       window.clearTimeout(timer)
       events.forEach((e) => window.removeEventListener(e, bump))
     }
-  }, [isHome, feltOpen, navigate])
+  }, [isHome, navigate])
 
   return (
     <KioskStage>
@@ -67,7 +64,7 @@ export default function App() {
           <Routes>
             <Route
               path="/"
-              element={<HomePage data={data} teReo={teReo} onReport={() => setFeltOpen(true)} />}
+              element={<HomePage data={data} teReo={teReo} />}
             />
             <Route path="/map" element={<MapPage data={data} />} />
             <Route path="/earthquakes" element={<EarthquakesPage data={data} />} />
@@ -82,7 +79,6 @@ export default function App() {
           </Routes>
         </main>
         <StatusBar updatedAt={data.updatedAt} loading={data.loading} clock={clock} />
-        <FeltModal open={feltOpen} onClose={() => setFeltOpen(false)} />
       </div>
     </KioskStage>
   )

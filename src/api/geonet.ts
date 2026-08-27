@@ -674,7 +674,6 @@ export function volcanoDisplayName(title: string): string {
   return title
 }
 
-export const FELT_IT_URL = 'https://www.geonet.org.nz/quakes/felt'
 export const SEEDLINK_HOST = 'link.geonet.org.nz:18000'
 export const KIOSK_WIDTH = 1920
 export const KIOSK_HEIGHT = 1080

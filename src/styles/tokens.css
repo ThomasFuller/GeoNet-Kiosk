@@ -298,47 +298,6 @@ p {
   gap: 12px;
 }
 
-.felt-modal {
-  position: absolute;
-  inset: 0;
-  z-index: 80;
-  display: grid;
-  place-items: center;
-}
-
-.felt-modal-scrim {
-  position: absolute;
-  inset: 0;
-  border: 0;
-  background: color-mix(in srgb, var(--puia-100) 45%, transparent);
-  cursor: pointer;
-}
-
-.felt-modal-card {
-  position: relative;
-  width: 560px;
-  padding: 36px 32px 28px;
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
-  text-align: left;
-}
-
-.felt-modal-card img {
-  width: 40px;
-  height: 40px;
-}
-
-.felt-modal-card h2 {
-  font-size: 36px;
-}
-
-.felt-url {
-  font-family: var(--font-heading);
-  font-size: 18px;
-  color: var(--accent);
-}
-
 /* Leaflet kiosk chrome */
 .leaflet-control-zoom a {
   width: 52px !important;

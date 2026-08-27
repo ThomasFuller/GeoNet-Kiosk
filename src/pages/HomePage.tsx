@@ -2,18 +2,16 @@ import { QuakeMap } from '../components/QuakeMap'
 import { QuakeSummary } from '../components/QuakeSummary'
 import { VolcanoAlerts } from '../components/VolcanoAlerts'
 import { LiveCamera } from '../components/LiveCamera'
-import { CategoryGrid, FeltItBanner, Hero } from '../components/HomeExtras'
+import { CategoryGrid, Hero } from '../components/HomeExtras'
 import type { GeoNetBundle } from '../hooks/useGeoNetData'
 import './HomePage.css'
 
 export function HomePage({
   data,
   teReo,
-  onReport,
 }: {
   data: GeoNetBundle
   teReo: boolean
-  onReport: () => void
 }) {
   const latest = [...data.quakes].sort(
     (a, b) => +new Date(b.properties.time) - +new Date(a.properties.time),
@@ -30,7 +28,6 @@ export function HomePage({
             sensorCount={data.stations.length}
             unrestCount={unrest}
           />
-          <FeltItBanner teReo={teReo} onReport={onReport} />
           <QuakeMap quakes={data.quakes} stations={data.stations} compact />
         </div>
         <aside className="home-side">

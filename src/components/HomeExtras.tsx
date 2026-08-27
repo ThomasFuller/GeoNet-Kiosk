@@ -8,15 +8,11 @@ const copy = {
     title: 'Our dynamic land, in focus',
     blurb:
       'Hundreds of sensors listen to Aotearoa every second — shakes, volcanoes, magnets and the sea. This kiosk shows the same live GeoNet data scientists use.',
-    felt: 'Help our scientists by reporting what you felt.',
-    report: 'Felt It?',
   },
   mi: {
     title: 'Tō tātou whenua hihiri, kei te arotahi',
     blurb:
       'E rongo ana ngā pūoko i Aotearoa i ia hekona — rū whenua, puia, autō me te moana. Ko ngā raraunga ora o GeoNet tēnei.',
-    felt: 'Āwhina i ā mātou kaipūtaiao mā te pūrongo i tāu i rongo ai.',
-    report: 'I rongo koe?',
   },
 } as const
 
@@ -52,21 +48,6 @@ export function Hero({
           </span>
         </div>
       </div>
-    </div>
-  )
-}
-
-export function FeltItBanner({ teReo, onReport }: { teReo: boolean; onReport: () => void }) {
-  const t = teReo ? copy.mi : copy.en
-  return (
-    <div className="felt-banner card">
-      <div className="felt-icon" aria-hidden="true">
-        <img src={brandIcon('earthquake.svg')} alt="" />
-      </div>
-      <p>{t.felt}</p>
-      <button type="button" className="touch-btn primary" onClick={onReport}>
-        {t.report} <span aria-hidden="true">→</span>
-      </button>
     </div>
   )
 }
