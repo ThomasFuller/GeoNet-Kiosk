@@ -1,0 +1,432 @@
+[
+  {
+    "features": [
+      {
+        "geometry": {
+          "crs": {
+            "type": "name",
+            "properties": {
+              "name": "EPSG:4326"
+            }
+          },
+          "type": "Point",
+          "coordinates": [
+            -39.16732,
+            175.48055
+          ]
+        },
+        "volcano-id": [
+          "ngauruhoe"
+        ],
+        "volcano-title": [
+          "Ngauruhoe"
+        ],
+        "properties": {
+          "latest-image-medium": "latest/m-ngauruhoe.jpg",
+          "title": "Ngauruhoe from West",
+          "latest-image-thumb": "latest/t-ngauruhoe.jpg",
+          "latest-timestamp": " 6:50 pm (NZST) 27 Aug 2026",
+          "height": 881,
+          "latest-image-large": "latest/ngauruhoe.jpg",
+          "azimuth": 84,
+          "ground": 4
+        },
+        "type": "Feature",
+        "id": "ngauruhoe"
+      },
+      {
+        "geometry": {
+          "crs": {
+            "type": "name",
+            "properties": {
+              "name": "EPSG:4326"
+            }
+          },
+          "type": "Point",
+          "coordinates": [
+            -39.29642,
+            175.7663
+          ]
+        },
+        "volcano-id": [
+          "ngauruhoe",
+          "tongariro"
+        ],
+        "volcano-title": [
+          "Ngauruhoe",
+          "Tongariro"
+        ],
+        "properties": {
+          "latest-image-medium": "latest/m-ngauruhoetongariro.jpg",
+          "title": "Ngauruhoe \u0026 Tongariro from South East",
+          "latest-image-thumb": "latest/t-ngauruhoetongariro.jpg",
+          "latest-timestamp": " 6:50 pm (NZST) 27 Aug 2026",
+          "height": 1366,
+          "latest-image-large": "latest/ngauruhoetongariro.jpg",
+          "azimuth": 331,
+          "ground": 1.9
+        },
+        "type": "Feature",
+        "id": "ngauruhoetongariro"
+      }
+    ],
+    "type": "FeatureCollection"
+  },
+  {
+    "features": [
+      {
+        "geometry": {
+          "crs": {
+            "type": "name",
+            "properties": {
+              "name": "EPSG:4326"
+            }
+          },
+          "type": "Point",
+          "coordinates": [
+            -29.267332,
+            -177.907235
+          ]
+        },
+        "volcano-id": [
+          "kermadecislands"
+        ],
+        "volcano-title": [
+          "Kermadec Islands"
+        ],
+        "properties": {
+          "latest-image-medium": "latest/m-raoulisland.jpg",
+          "title": "Raoul Island",
+          "latest-image-thumb": "latest/t-raoulisland.jpg",
+          "latest-timestamp": " 6:50 pm (NZST) 27 Aug 2026",
+          "height": 490,
+          "latest-image-large": "latest/raoulisland.jpg",
+          "azimuth": 270,
+          "ground": 1.5
+        },
+        "type": "Feature",
+        "id": "raoulisland"
+      }
+    ],
+    "type": "FeatureCollection"
+  },
+  {
+    "features": [
+      {
+        "geometry": {
+          "crs": {
+            "type": "name",
+            "properties": {
+              "name": "EPSG:4326"
+            }
+          },
+          "type": "Point",
+          "coordinates": [
+            -39.16732,
+            175.48055
+          ]
+        },
+        "volcano-id": [
+          "ruapehu"
+        ],
+        "volcano-title": [
+          "Ruapehu"
+        ],
+        "properties": {
+          "latest-image-medium": "latest/m-ruapehunorth.jpg",
+          "title": "Ruapehu from North",
+          "latest-image-thumb": "latest/t-ruapehunorth.jpg",
+          "latest-timestamp": " 6:50 pm (NZST) 27 Aug 2026",
+          "height": 881,
+          "latest-image-large": "latest/ruapehunorth.jpg",
+          "azimuth": 148,
+          "ground": 0
+        },
+        "type": "Feature",
+        "id": "ruapehunorth"
+      },
+      {
+        "geometry": {
+          "crs": {
+            "type": "name",
+            "properties": {
+              "name": "EPSG:4326"
+            }
+          },
+          "type": "Point",
+          "coordinates": [
+            -39.29642,
+            175.7663
+          ]
+        },
+        "volcano-id": [
+          "ruapehu"
+        ],
+        "volcano-title": [
+          "Ruapehu"
+        ],
+        "properties": {
+          "latest-image-medium": "latest/m-ruapehueast.jpg",
+          "title": "Ruapehu from East",
+          "latest-image-thumb": "latest/t-ruapehueast.jpg",
+          "latest-timestamp": " 6:50 pm (NZST) 27 Aug 2026",
+          "height": 1366,
+          "latest-image-large": "latest/ruapehueast.jpg",
+          "azimuth": 275,
+          "ground": 1.9
+        },
+        "type": "Feature",
+        "id": "ruapehueast"
+      },
+      {
+        "geometry": {
+          "crs": {
+            "type": "name",
+            "properties": {
+              "name": "EPSG:4326"
+            }
+          },
+          "type": "Point",
+          "coordinates": [
+            -39.384607843,
+            175.470410324
+          ]
+        },
+        "volcano-id": [
+          "ruapehu"
+        ],
+        "volcano-title": [
+          "Ruapehu"
+        ],
+        "properties": {
+          "latest-image-medium": "latest/m-ruapehusouth.jpg",
+          "title": "Ruapehu from South",
+          "latest-image-thumb": "latest/t-ruapehusouth.jpg",
+          "latest-timestamp": " 6:50 pm (NZST) 27 Aug 2026",
+          "height": 840,
+          "latest-image-large": "latest/ruapehusouth.jpg",
+          "azimuth": 37,
+          "ground": 2
+        },
+        "type": "Feature",
+        "id": "ruapehusouth"
+      }
+    ],
+    "type": "FeatureCollection"
+  },
+  {
+    "features": [
+      {
+        "geometry": {
+          "crs": {
+            "type": "name",
+            "properties": {
+              "name": "EPSG:4326"
+            }
+          },
+          "type": "Point",
+          "coordinates": [
+            -39.062427989,
+            174.073384416
+          ]
+        },
+        "volcano-id": [
+          "taranakiegmont"
+        ],
+        "volcano-title": [
+          "Taranaki/Egmont"
+        ],
+        "properties": {
+          "latest-image-medium": "latest/m-taranaki.jpg",
+          "title": "Taranaki Maunga from New Plymouth",
+          "latest-image-thumb": "latest/t-taranaki.jpg",
+          "latest-timestamp": " 6:50 pm (NZST) 27 Aug 2026",
+          "height": 47,
+          "latest-image-large": "latest/taranaki.jpg",
+          "azimuth": 183,
+          "ground": 0
+        },
+        "type": "Feature",
+        "id": "taranaki"
+      }
+    ],
+    "type": "FeatureCollection"
+  },
+  {
+    "features": [
+      {
+        "geometry": {
+          "crs": {
+            "type": "name",
+            "properties": {
+              "name": "EPSG:4326"
+            }
+          },
+          "type": "Point",
+          "coordinates": [
+            -37.748423,
+            177.692166
+          ]
+        },
+        "volcano-id": [
+          "whiteisland"
+        ],
+        "volcano-title": [
+          "White Island"
+        ],
+        "properties": {
+          "latest-image-medium": "latest/m-tekaha.jpg",
+          "title": "Whakaari/White Island from Te Kaha",
+          "latest-image-thumb": "latest/t-tekaha.jpg",
+          "latest-timestamp": " 6:50 pm (NZST) 27 Aug 2026",
+          "height": 69,
+          "latest-image-large": "latest/tekaha.jpg",
+          "azimuth": 298,
+          "ground": 2
+        },
+        "type": "Feature",
+        "id": "tekaha"
+      },
+      {
+        "geometry": {
+          "crs": {
+            "type": "name",
+            "properties": {
+              "name": "EPSG:4326"
+            }
+          },
+          "type": "Point",
+          "coordinates": [
+            -37.956903132,
+            177.000764155
+          ]
+        },
+        "volcano-id": [
+          "whiteisland"
+        ],
+        "volcano-title": [
+          "White Island"
+        ],
+        "properties": {
+          "latest-image-medium": "latest/m-whakatane.jpg",
+          "title": "Whakaari/White Island from Whakatāne",
+          "latest-image-thumb": "latest/t-whakatane.jpg",
+          "latest-timestamp": " 6:50 pm (NZST) 27 Aug 2026",
+          "height": 100,
+          "latest-image-large": "latest/whakatane.jpg",
+          "azimuth": 19,
+          "ground": 4
+        },
+        "type": "Feature",
+        "id": "whakatane"
+      }
+    ],
+    "type": "FeatureCollection"
+  },
+  {
+    "features": [
+      {
+        "geometry": {
+          "crs": {
+            "type": "name",
+            "properties": {
+              "name": "EPSG:4326"
+            }
+          },
+          "type": "Point",
+          "coordinates": [
+            -38.97490003,
+            175.694834619
+          ]
+        },
+        "volcano-id": [
+          "tongariro"
+        ],
+        "volcano-title": [
+          "Tongariro"
+        ],
+        "properties": {
+          "latest-image-medium": "latest/m-tongariro.jpg",
+          "title": "Tongariro from North",
+          "latest-image-thumb": "latest/t-tongariro.jpg",
+          "latest-timestamp": " 6:50 pm (NZST) 27 Aug 2026",
+          "height": 1327,
+          "latest-image-large": "latest/tongariro.jpg",
+          "azimuth": 192,
+          "ground": 1.5
+        },
+        "type": "Feature",
+        "id": "tongariro"
+      },
+      {
+        "geometry": {
+          "crs": {
+            "type": "name",
+            "properties": {
+              "name": "EPSG:4326"
+            }
+          },
+          "type": "Point",
+          "coordinates": [
+            -39.29642,
+            175.7663
+          ]
+        },
+        "volcano-id": [
+          "ngauruhoe",
+          "tongariro"
+        ],
+        "volcano-title": [
+          "Ngauruhoe",
+          "Tongariro"
+        ],
+        "properties": {
+          "latest-image-medium": "latest/m-ngauruhoetongariro.jpg",
+          "title": "Ngauruhoe \u0026 Tongariro from South East",
+          "latest-image-thumb": "latest/t-ngauruhoetongariro.jpg",
+          "latest-timestamp": " 6:50 pm (NZST) 27 Aug 2026",
+          "height": 1366,
+          "latest-image-large": "latest/ngauruhoetongariro.jpg",
+          "azimuth": 331,
+          "ground": 1.9
+        },
+        "type": "Feature",
+        "id": "ngauruhoetongariro"
+      },
+      {
+        "geometry": {
+          "crs": {
+            "type": "name",
+            "properties": {
+              "name": "EPSG:4326"
+            }
+          },
+          "type": "Point",
+          "coordinates": [
+            -39.094442315,
+            175.641203517
+          ]
+        },
+        "volcano-id": [
+          "tongariro"
+        ],
+        "volcano-title": [
+          "Tongariro"
+        ],
+        "properties": {
+          "latest-image-medium": "latest/m-tongarirotemaaricrater.jpg",
+          "title": "Tongariro Te Maari Crater",
+          "latest-image-thumb": "latest/t-tongarirotemaaricrater.jpg",
+          "latest-timestamp": " 6:50 pm (NZST) 27 Aug 2026",
+          "height": 1207,
+          "latest-image-large": "latest/tongarirotemaaricrater.jpg",
+          "azimuth": 0,
+          "ground": 0
+        },
+        "type": "Feature",
+        "id": "tongarirotemaaricrater"
+      }
+    ],
+    "type": "FeatureCollection"
+  }
+]

@@ -1,0 +1,31 @@
+.home-page {
+  display: grid;
+  grid-template-rows: 1fr 118px;
+  gap: 12px;
+  height: 100%;
+}
+
+.home-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.55fr) 400px;
+  gap: 16px;
+  min-height: 0;
+}
+
+.home-main {
+  display: grid;
+  grid-template-rows: auto auto minmax(0, 1fr);
+  gap: 12px;
+  min-height: 0;
+}
+
+.home-side {
+  display: grid;
+  grid-template-rows: auto auto minmax(0, 1fr);
+  gap: 12px;
+  min-height: 0;
+}
+
+.home-side .camera-card {
+  min-height: 0;
+}

@@ -1,0 +1,352 @@
+/** Brand tokens from beta.geonet.org.nz design system, locked to a 1920×1080 kiosk. */
+:root {
+  --whenua-00: #efebe1;
+  --whenua-05: #d9d1bd;
+  --whenua-10: #c4a989;
+  --whenua-20: #b38c65;
+  --puia-20: #ffa100;
+  --puia-30: #ff7424;
+  --puia-40: #f75417;
+  --puia-50: #e83b00;
+  --puia-90: #570709;
+  --puia-100: #320719;
+  --puia-110: #240013;
+  --wai-00: #c7e1f6;
+
+  /* GeoNet volcanic alert scale (not traffic-light) */
+  --val-0: #e7deec;
+  --val-1: #dcc9e0;
+  --val-2: #d1b5d3;
+  --val-3: #a867a2;
+  --val-4: #954990;
+  --val-5: #832c82;
+
+  --live: #2e7d32;
+  --error: #ed0000;
+  --link: #b38c65;
+
+  --bg: var(--whenua-00);
+  --bg-card: #f7f3eb;
+  --bg-elevated: #fffdf8;
+  --ink: var(--puia-100);
+  --ink-muted: #5c3a45;
+  --accent: var(--puia-50);
+  --brand: var(--puia-100);
+  --border: color-mix(in srgb, var(--whenua-10) 60%, transparent);
+  --shadow: 0 8px 24px color-mix(in srgb, var(--puia-100) 8%, transparent);
+
+  --font-heading: "Aspekta", Helvetica, Arial, sans-serif;
+  --font-body: "Sohne", "Söhne", "Aspekta", Helvetica, Arial, sans-serif;
+
+  --radius: 8px;
+  --radius-lg: 32px;
+  --touch: 56px;
+  --nav-h: 88px;
+  --foot-h: 52px;
+  --page-pad: 32px;
+  --kiosk-w: 1920px;
+  --kiosk-h: 1080px;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  overflow: hidden;
+}
+
+html {
+  -webkit-tap-highlight-color: transparent;
+}
+
+body {
+  color: var(--ink);
+  background: var(--puia-100);
+  font-family: var(--font-body);
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 1.45;
+  user-select: none;
+}
+
+button,
+a {
+  font: inherit;
+  color: inherit;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  font-family: var(--font-heading);
+  font-weight: 300;
+  letter-spacing: -0.02em;
+  margin: 0;
+}
+
+p {
+  margin: 0;
+}
+
+.kiosk-letterbox {
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  background: var(--puia-100);
+}
+
+.kiosk-stage {
+  width: var(--kiosk-w);
+  height: var(--kiosk-h);
+  transform-origin: top left;
+  overflow: hidden;
+  color: var(--ink);
+  background-color: var(--bg);
+  background-image: url("/brand/icons/pattern-altogether.svg");
+  background-repeat: repeat;
+  background-size: 640px 611px;
+  font-family: var(--font-body);
+}
+
+.app-shell {
+  height: 1080px;
+  display: grid;
+  grid-template-rows: var(--nav-h) 1fr var(--foot-h);
+}
+
+.kiosk-scroll {
+  overflow: hidden;
+  padding: 16px var(--page-pad) 12px;
+  min-height: 0;
+}
+
+.kiosk-scroll.allow-scroll {
+  overflow: auto;
+  overscroll-behavior: contain;
+}
+
+.page {
+  height: 100%;
+  min-height: 0;
+}
+
+.card {
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+}
+
+.touch-btn {
+  min-height: var(--touch);
+  min-width: var(--touch);
+  border: 0;
+  border-radius: var(--radius);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 0 22px;
+  cursor: pointer;
+  text-decoration: none;
+  font-weight: 500;
+  transition: transform 160ms ease, background 160ms ease;
+}
+
+.touch-btn:active {
+  transform: scale(0.98);
+}
+
+.touch-btn.primary {
+  background: var(--brand);
+  color: #fff;
+}
+
+.touch-btn.primary:hover {
+  background: var(--puia-90);
+}
+
+.link-arrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--brand);
+  font-weight: 500;
+  text-decoration: none;
+  min-height: 48px;
+}
+
+.link-arrow img {
+  width: 14px;
+  height: 14px;
+  filter: invert(12%) sepia(34%) saturate(1800%) hue-rotate(314deg);
+}
+
+.muted {
+  color: var(--ink-muted);
+}
+
+.live-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--live);
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--live) 18%, transparent);
+  animation: pulse-live 1.8s ease-in-out infinite;
+}
+
+@keyframes pulse-live {
+  0%,
+  100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.25); opacity: 0.55; }
+}
+
+.section-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 20px;
+  font-weight: 300;
+  margin-bottom: 4px;
+}
+
+.section-title img,
+.section-title svg {
+  width: 28px;
+  height: 28px;
+}
+
+.stat-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+
+.stat {
+  background: var(--bg-card);
+  border-radius: var(--radius);
+  padding: 10px 8px;
+  text-align: center;
+}
+
+.stat strong {
+  display: block;
+  font-family: var(--font-heading);
+  font-weight: 500;
+  font-size: 28px;
+  line-height: 1.1;
+  color: var(--brand);
+}
+
+.stat span {
+  font-size: 13px;
+  color: var(--ink-muted);
+}
+
+.val-badge {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  font-weight: 600;
+  font-family: var(--font-heading);
+  color: var(--puia-100);
+  flex-shrink: 0;
+}
+
+.val-0 { background: var(--val-0); }
+.val-1 { background: var(--val-1); }
+.val-2 { background: var(--val-2); }
+.val-3 { background: var(--val-3); color: #fff; }
+.val-4 { background: var(--val-4); color: #fff; }
+.val-5 { background: var(--val-5); color: #fff; }
+
+.empty-state,
+.error-state {
+  padding: 16px 18px;
+  color: var(--ink-muted);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.felt-modal {
+  position: absolute;
+  inset: 0;
+  z-index: 80;
+  display: grid;
+  place-items: center;
+}
+
+.felt-modal-scrim {
+  position: absolute;
+  inset: 0;
+  border: 0;
+  background: color-mix(in srgb, var(--puia-100) 45%, transparent);
+  cursor: pointer;
+}
+
+.felt-modal-card {
+  position: relative;
+  width: 560px;
+  padding: 36px 32px 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  text-align: left;
+}
+
+.felt-modal-card img {
+  width: 40px;
+  height: 40px;
+}
+
+.felt-modal-card h2 {
+  font-size: 36px;
+}
+
+.felt-url {
+  font-family: var(--font-heading);
+  font-size: 18px;
+  color: var(--accent);
+}
+
+/* Leaflet kiosk chrome */
+.leaflet-control-zoom a {
+  width: 52px !important;
+  height: 52px !important;
+  line-height: 52px !important;
+  font-size: 26px !important;
+  color: var(--puia-100) !important;
+}
+
+.leaflet-popup-content-wrapper {
+  border-radius: 8px;
+  font-family: var(--font-body);
+}
+
+.leaflet-popup-content {
+  font-size: 16px;
+  margin: 14px 16px;
+  min-width: 180px;
+}
+
+.leaflet-container {
+  font: inherit;
+  background: #e4ddd0;
+}

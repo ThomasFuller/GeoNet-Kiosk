@@ -1,0 +1,42 @@
+.sparkline {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.sparkline.empty {
+  color: var(--ink-muted);
+  padding: 12px 0;
+}
+
+.sparkline-head {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  align-items: start;
+}
+
+.sparkline-head p {
+  font-size: 0.82rem;
+}
+
+.sparkline-value {
+  font-family: var(--font-heading);
+  font-size: 1.4rem;
+  color: var(--brand);
+  text-align: right;
+}
+
+.sparkline-value span {
+  display: block;
+  font-size: 0.75rem;
+  color: var(--ink-muted);
+  font-family: var(--font-body);
+}
+
+.sparkline svg {
+  width: 100%;
+  height: auto;
+  background: var(--bg-card);
+  border-radius: 12px;
+}

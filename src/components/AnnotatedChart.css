@@ -1,0 +1,87 @@
+.anno-chart {
+  padding: 16px 18px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-height: 0;
+}
+
+.anno-chart header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.anno-chart h3 {
+  font-size: 22px;
+  color: var(--brand);
+}
+
+.anno-meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--ink-muted);
+  font-size: 14px;
+  white-space: nowrap;
+}
+
+.anno-bubble {
+  background: var(--bg-card);
+  border-radius: var(--radius);
+  padding: 10px 14px;
+  font-size: 16px;
+  line-height: 1.35;
+}
+
+.anno-chart.accent-val .anno-bubble {
+  background: color-mix(in srgb, var(--val-1) 55%, white);
+}
+
+.anno-chart.accent-wai .anno-bubble {
+  background: color-mix(in srgb, var(--wai-00) 70%, white);
+}
+
+.anno-chart.accent-whenua .anno-bubble {
+  background: color-mix(in srgb, var(--whenua-05) 80%, white);
+}
+
+.anno-chart svg {
+  width: 100%;
+  height: auto;
+  background: var(--bg-card);
+  border-radius: 12px;
+}
+
+.anno-chart .grid {
+  stroke: color-mix(in srgb, var(--whenua-10) 50%, transparent);
+  stroke-width: 1;
+}
+
+.anno-chart .tick {
+  fill: var(--ink-muted);
+  font-size: 11px;
+  font-family: var(--font-body);
+}
+
+.anno-chart .axis-unit {
+  fill: var(--ink-muted);
+  font-size: 11px;
+}
+
+.anno-x {
+  font-size: 13px;
+}
+
+.anno-empty {
+  min-height: 140px;
+  display: grid;
+  place-items: center;
+  text-align: center;
+  padding: 24px;
+  color: var(--ink-muted);
+  background: var(--bg-card);
+  border-radius: 12px;
+  font-size: 17px;
+}
