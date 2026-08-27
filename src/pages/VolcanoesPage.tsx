@@ -61,7 +61,7 @@ export function VolcanoesPage({ data }: { data: GeoNetBundle }) {
         ))}
       </div>
 
-      <Link to="/cameras" className="link-arrow">
+      <Link to="/cameras" className="link-arrow card">
         Watch the volcano cameras <img src={brandIcon('right-arrow.svg')} alt="" />
       </Link>
 

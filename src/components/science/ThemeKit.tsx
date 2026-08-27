@@ -13,7 +13,7 @@ export function PageHero({
   icon: string
 }) {
   return (
-    <div className="page-hero">
+    <div className="page-hero card">
       <Link to="/" className="link-arrow back">
         ← Home
       </Link>
@@ -32,7 +32,7 @@ export function StatChips({
   items: Array<{ value: string | number; label: string }>
 }) {
   return (
-    <div className={`stat-row theme-stats cols-${Math.min(items.length, 4)}`}>
+    <div className={`stat-row theme-stats card cols-${Math.min(items.length, 4)}`}>
       {items.map((item) => (
         <div key={item.label} className="stat">
           <strong>{item.value}</strong>
@@ -120,7 +120,7 @@ export function Scale({
 }
 
 export function Note({ children }: { children: ReactNode }) {
-  return <p className="muted kiosk-note">{children}</p>
+  return <p className="muted kiosk-note card">{children}</p>
 }
 
 export function QuakeRow({ quake }: { quake: QuakeFeature }) {

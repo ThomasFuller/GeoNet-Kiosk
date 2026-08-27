@@ -5,7 +5,7 @@
   gap: 24px;
   height: var(--nav-h);
   padding: 0 var(--page-pad);
-  background: color-mix(in srgb, var(--bg) 78%, transparent);
+  background: var(--bg-elevated);
   border-bottom: 1px solid var(--border);
   z-index: 20;
 }

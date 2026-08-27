@@ -28,7 +28,7 @@ export function PeriodPicker({
   onChange: (period: ChartPeriod) => void
 }) {
   return (
-    <div className="period-picker" role="radiogroup" aria-label="Chart time period">
+    <div className="period-picker card" role="radiogroup" aria-label="Chart time period">
       <span className="period-label">Show</span>
       {CHART_PERIODS.map((p) => (
         <button

@@ -8,6 +8,8 @@
 
 .page-hero {
   max-width: 78ch;
+  padding: 12px 18px 14px;
+  background: var(--bg-elevated);
 }
 
 .page-hero .back {
@@ -198,6 +200,8 @@
   align-items: center;
   gap: 8px;
   flex-shrink: 0;
+  padding: 8px 12px;
+  background: var(--bg-elevated);
 }
 
 .period-label {
