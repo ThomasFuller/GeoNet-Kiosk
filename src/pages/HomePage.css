@@ -36,9 +36,7 @@
 }
 
 .home-side .camera-card {
-  flex: 1 1 0;
-  min-height: 0;
-  overflow: hidden;
+  flex: 0 0 auto;
 }
 
 .home-side .link-arrow {

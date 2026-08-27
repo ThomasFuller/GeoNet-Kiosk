@@ -36,10 +36,6 @@ export function LiveCamera({ cameras, bust }: { cameras: CameraFeature[]; bust: 
           <span className="live-dot" /> Latest
         </div>
       </div>
-      <div className="camera-meta">
-        <strong>{cam.properties.title}</strong>
-        <p className="muted">{cam.properties['latest-timestamp']}</p>
-      </div>
       <Link to="/cameras" className="link-arrow">
         View all cameras <img src={brandIcon('right-arrow.svg')} alt="" />
       </Link>
