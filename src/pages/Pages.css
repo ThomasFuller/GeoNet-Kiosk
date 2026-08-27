@@ -94,6 +94,31 @@
   align-content: start;
 }
 
+.volcano-board {
+  height: auto;
+  overflow: visible;
+}
+
+.theme-map-tall {
+  height: 640px;
+  min-height: 640px;
+}
+
+.theme-split {
+  height: auto;
+  min-height: 420px;
+}
+
+.station-mini li {
+  align-items: start;
+}
+
+.list-panel h2,
+.list-panel h3 {
+  font-size: 22px;
+  font-weight: 300;
+}
+
 .volcano-tile {
   display: grid;
   grid-template-columns: auto 1fr;

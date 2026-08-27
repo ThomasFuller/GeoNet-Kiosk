@@ -637,6 +637,18 @@ export function formatMag(m: number): string {
   return `M ${m.toFixed(1)}`
 }
 
+/** Simplified New Zealand Modified Mercalli words used on geonet.org.nz. */
+export function intensityWord(mmi: number): string {
+  const n = Math.round(mmi)
+  if (n <= 2) return 'unnoticeable'
+  if (n === 3) return 'weak'
+  if (n === 4) return 'light'
+  if (n === 5) return 'moderate'
+  if (n === 6) return 'strong'
+  if (n === 7) return 'severe'
+  return 'extreme'
+}
+
 export function formatRelativeTime(iso: string, now = Date.now()): string {
   const diff = Math.max(0, now - new Date(iso).getTime())
   const mins = Math.floor(diff / 60000)

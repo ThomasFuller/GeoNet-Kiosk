@@ -6,16 +6,14 @@ import { KioskStage } from './components/KioskStage'
 import { FeltModal } from './components/FeltModal'
 import { useGeoNetData } from './hooks/useGeoNetData'
 import { HomePage } from './pages/HomePage'
-import {
-  AboutPage,
-  AlertsPage,
-  CamerasPage,
-  EarthquakesPage,
-  MapPage,
-  SensorsPage,
-  TsunamiPage,
-  VolcanoesPage,
-} from './pages/SectionPages'
+import { AboutPage } from './pages/AboutPage'
+import { AlertsPage } from './pages/AlertsPage'
+import { CamerasPage } from './pages/CamerasPage'
+import { EarthquakesPage } from './pages/EarthquakesPage'
+import { LandslidePage } from './pages/LandslidePage'
+import { MapPage, SensorsPage } from './pages/SectionPages'
+import { TsunamiPage } from './pages/TsunamiPage'
+import { VolcanoesPage } from './pages/VolcanoesPage'
 import './styles/tokens.css'
 
 const IDLE_HOME_MS = 3 * 60_000
@@ -76,7 +74,8 @@ export default function App() {
             <Route path="/volcanoes" element={<VolcanoesPage data={data} />} />
             <Route path="/cameras" element={<CamerasPage data={data} />} />
             <Route path="/sensors" element={<SensorsPage data={data} />} />
-            <Route path="/tsunami" element={<TsunamiPage />} />
+            <Route path="/tsunami" element={<TsunamiPage data={data} />} />
+            <Route path="/landslide" element={<LandslidePage data={data} />} />
             <Route path="/alerts" element={<AlertsPage data={data} />} />
             <Route path="/about" element={<AboutPage teReo={teReo} />} />
             <Route path="*" element={<Navigate to="/" replace />} />
