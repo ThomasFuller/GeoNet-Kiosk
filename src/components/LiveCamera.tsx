@@ -18,8 +18,8 @@ export function LiveCamera({ cameras, bust }: { cameras: CameraFeature[]; bust: 
   }
 
   const src = cameraImageUrl(
-    cam.properties['latest-image-large'] ||
-      cam.properties['latest-image-medium'] ||
+    cam.properties['latest-image-medium'] ||
+      cam.properties['latest-image-large'] ||
       cam.properties['latest-image-thumb'],
     bust,
   )
