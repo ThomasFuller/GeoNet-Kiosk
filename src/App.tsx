@@ -78,7 +78,7 @@ export default function App() {
             <Route path="/sensors" element={<SensorsPage data={data} />} />
             <Route path="/tsunami" element={<TsunamiPage />} />
             <Route path="/alerts" element={<AlertsPage data={data} />} />
-            <Route path="/about" element={<AboutPage data={data} teReo={teReo} />} />
+            <Route path="/about" element={<AboutPage teReo={teReo} />} />
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
         </main>

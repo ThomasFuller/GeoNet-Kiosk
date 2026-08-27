@@ -115,14 +115,6 @@ export type QuakeStats = {
   days28: MagBuckets
 }
 
-export type NewsItem = {
-  title: string
-  type: string
-  tag: string
-  published: string
-  link: string
-}
-
 const DEV = import.meta.env.DEV
 const API = DEV ? '/proxy/api' : 'https://api.geonet.org.nz'
 const IMAGES = DEV ? '/proxy/images' : 'https://images.geonet.org.nz'
@@ -183,11 +175,6 @@ export async function fetchCameras(): Promise<CameraFeature[]> {
     const groups = await getJson<Array<{ features?: CameraFeature[] }>>(bundled('cameras.json'))
     return groups.flatMap((g) => g.features ?? [])
   }
-}
-
-export async function fetchNews(): Promise<NewsItem[]> {
-  const data = await getJson<{ feed?: NewsItem[] }>(`${API}/news/geonet`)
-  return data.feed ?? []
 }
 
 export function cameraImageUrl(path: string, bust = Date.now()): string {

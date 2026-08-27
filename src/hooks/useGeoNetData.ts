@@ -4,14 +4,12 @@ import {
   fetchCameras,
   fetchFeltReportCount,
   fetchGeomagLatest,
-  fetchNews,
   fetchQuakeStats,
   fetchQuakes,
   fetchTildeCatalog,
   fetchVolcanoAlerts,
   mergeStationsWithTilde,
   type CameraFeature,
-  type NewsItem,
   type QuakeFeature,
   type QuakeStats,
   type StationPoint,
@@ -29,7 +27,6 @@ export type GeoNetBundle = {
   stations: StationPoint[]
   tildeByStation: Record<string, TildeSeriesRef[]>
   geomag: TildeSeries | null
-  news: NewsItem[]
   updatedAt: number
   loading: boolean
   error: string | null
@@ -47,7 +44,6 @@ export function useGeoNetData(): GeoNetBundle {
   const [stations, setStations] = useState<StationPoint[]>([])
   const [tildeByStation, setTildeByStation] = useState<Record<string, TildeSeriesRef[]>>({})
   const [geomag, setGeomag] = useState<TildeSeries | null>(null)
-  const [news, setNews] = useState<NewsItem[]>([])
   const [updatedAt, setUpdatedAt] = useState(0)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
@@ -55,7 +51,7 @@ export function useGeoNetData(): GeoNetBundle {
   const load = useCallback(async () => {
     try {
       setError(null)
-      const [q, st, felt, v, c, s, g, n, tilde] = await Promise.all([
+      const [q, st, felt, v, c, s, g, tilde] = await Promise.all([
         fetchQuakes(-1),
         fetchQuakeStats().catch(() => null),
         fetchFeltReportCount().catch(() => 0),
@@ -63,7 +59,6 @@ export function useGeoNetData(): GeoNetBundle {
         fetchCameras(),
         fetchActiveStations().catch(() => [] as StationPoint[]),
         fetchGeomagLatest('EYWM', '1d').catch(() => null),
-        fetchNews().catch(() => [] as NewsItem[]),
         fetchTildeCatalog().catch(() => ({} as Record<string, TildeSeriesRef[]>)),
       ])
       setQuakes(q)
@@ -74,7 +69,6 @@ export function useGeoNetData(): GeoNetBundle {
       setTildeByStation(tilde)
       setStations(mergeStationsWithTilde(s, tilde))
       setGeomag(g)
-      setNews(n)
       setUpdatedAt(Date.now())
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to load GeoNet data')
@@ -99,7 +93,6 @@ export function useGeoNetData(): GeoNetBundle {
       stations,
       tildeByStation,
       geomag,
-      news,
       updatedAt,
       loading,
       error,
@@ -114,7 +107,6 @@ export function useGeoNetData(): GeoNetBundle {
       stations,
       tildeByStation,
       geomag,
-      news,
       updatedAt,
       loading,
       error,

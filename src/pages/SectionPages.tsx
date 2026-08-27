@@ -378,7 +378,7 @@ export function AlertsPage({ data }: { data: GeoNetBundle }) {
   )
 }
 
-export function AboutPage({ data, teReo }: { data: GeoNetBundle; teReo: boolean }) {
+export function AboutPage({ teReo }: { teReo: boolean }) {
   return (
     <div className="page section-page">
       <PageHero
@@ -400,19 +400,6 @@ export function AboutPage({ data, teReo }: { data: GeoNetBundle; teReo: boolean 
           <p>Data is open. Apps, schools, researchers and this kiosk all drink from the same well.</p>
         </article>
       </div>
-      {data.news.length > 0 && (
-        <div className="news-strip">
-          <h3>Latest from GeoNet</h3>
-          <ul>
-            {data.news.slice(0, 3).map((item) => (
-              <li key={item.link} className="card">
-                <strong>{item.title.trim()}</strong>
-                <p className="muted">{new Date(item.published).toLocaleDateString()}</p>
-              </li>
-            ))}
-          </ul>
-        </div>
-      )}
       <p className="muted about-note">
         Brand, type and icons follow beta.geonet.org.nz. Not an official emergency alerting product —
         always follow Civil Defence advice.

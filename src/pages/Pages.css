@@ -381,28 +381,6 @@
   gap: 12px;
 }
 
-.news-strip {
-  margin-top: 4px;
-}
-
-.news-strip h3 {
-  margin-bottom: 10px;
-  font-size: 20px;
-}
-
-.news-strip ul {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 12px;
-}
-
-.news-strip li {
-  padding: 14px 16px;
-}
-
 .about-note {
   margin-top: 8px;
   max-width: 70ch;
